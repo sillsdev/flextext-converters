@@ -1,0 +1,25 @@
+.
+tox==4.13.0
+
+# Testing
+pytest==8.0.2
+pytest-cov==4.1.0
+
+# Type Checking.
+mypy===1.8.0
+types-requests
+types-pyOpenSSL
+types-python-dateutil
+types-PyYAML
+
+# Linting.
+flake8==7.0.0
+flake8-bugbear
+flake8-broken-line
+flake8-comprehensions
+flake8-eradicate
+pep8-naming
+
+# Formatting.
+black
+isort
