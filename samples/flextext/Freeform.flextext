@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document version="2">
+  <interlinear-text guid="e763856d-1baa-4f4e-9e2e-1417d56709af">
+    <item type="title" lang="ext">Freeform</item>
+    <paragraphs>
+      <paragraph guid="e3cb6669-59c6-4af4-9c1d-0903bbb742ea">
+        <phrases>
+          <phrase guid="b54f36e5-b75b-4cc2-b9e9-893857d62cfc">
+            <item type="txt" lang="ext">This has a translation.</item>
+            <item type="segnum" lang="en">1</item>
+            <words>
+              <word guid="e91a7bd6-a79a-4d2c-9e70-2659fc183065">
+                <item type="txt" lang="ext">This</item>
+                <morphemes>
+                  <morph>
+                    <item type="txt" lang="ext">this</item>
+                  </morph>
+                </morphemes>
+                <item type="gls" lang="en">this</item>
+              </word>
+              <word guid="c9f72821-7fa5-4132-97bb-f461936273de">
+                <item type="txt" lang="ext">has</item>
+              </word>
+              <word guid="535b6edb-9f96-4cde-b430-4501808cb277">
+                <item type="txt" lang="ext">a</item>
+              </word>
+              <word guid="fbf7a9f7-3818-44de-b326-8adcdde10b5e">
+                <item type="txt" lang="ext">translation</item>
+              </word>
+              <word>
+                <item type="punct" lang="ext">.</item>
+              </word>
+            </words>
+            <item type="gls" lang="en">It is a freeform translation.</item>
+            <item type="lit" lang="en"></item>
+          </phrase>
+        </phrases>
+      </paragraph>
+    </paragraphs>
+    <languages>
+      <language lang="ext" font="Charis SIL" vernacular="true" />
+      <language lang="en" font="Times New Roman" />
+    </languages>
+  </interlinear-text>
+</document>

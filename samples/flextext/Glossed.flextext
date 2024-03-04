@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document version="2">
+  <interlinear-text guid="3a2e48db-0d8c-4a80-8e91-331c8b57e061">
+    <item type="title" lang="ext">Glossed</item>
+    <paragraphs>
+      <paragraph guid="6166e35c-8ec9-488d-96be-af78c6541ed1">
+        <phrases>
+          <phrase guid="2ca669f5-ce3b-440c-a49b-fa5ada14a62e">
+            <item type="txt" lang="ext">This text is glossed.</item>
+            <item type="segnum" lang="en">1</item>
+            <words>
+              <word guid="ecd984c4-830f-4a50-bbf9-58eaea8e333a">
+                <item type="txt" lang="ext">This</item>
+                <morphemes>
+                  <morph>
+                    <item type="txt" lang="ext">this</item>
+                  </morph>
+                </morphemes>
+                <item type="gls" lang="en">this</item>
+              </word>
+              <word guid="c5c932ac-1118-44aa-bbcb-ebff257d48b5">
+                <item type="txt" lang="ext">text</item>
+                <morphemes>
+                  <morph>
+                    <item type="txt" lang="ext">text</item>
+                  </morph>
+                </morphemes>
+                <item type="gls" lang="en">text</item>
+              </word>
+              <word guid="00e8d49f-4d0f-4d74-a822-126264cdce1a">
+                <item type="txt" lang="ext">is</item>
+                <morphemes>
+                  <morph>
+                    <item type="txt" lang="ext">is</item>
+                  </morph>
+                </morphemes>
+                <item type="gls" lang="en">is</item>
+              </word>
+              <word guid="6013cf34-2a51-42b0-8b6a-f82505141fb0">
+                <item type="txt" lang="ext">glossed</item>
+                <morphemes>
+                  <morph>
+                    <item type="txt" lang="ext">glossed</item>
+                  </morph>
+                </morphemes>
+                <item type="gls" lang="en">glossed</item>
+              </word>
+              <word>
+                <item type="punct" lang="ext">.</item>
+              </word>
+            </words>
+            <item type="gls" lang="en"></item>
+            <item type="lit" lang="en"></item>
+          </phrase>
+        </phrases>
+      </paragraph>
+    </paragraphs>
+    <languages>
+      <language lang="ext" font="Charis SIL" vernacular="true" />
+      <language lang="en" font="Times New Roman" />
+    </languages>
+  </interlinear-text>
+</document>
