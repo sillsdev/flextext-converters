@@ -1,18 +1,6 @@
 from conversion_operations import convert
 
 
-def function():
-    return True
-
-
-def function2():
-    return False
-
-
-def throw_function():
-    raise ValueError()
-
-
 def main():
     print("<<< Toolbox to  Converter >>>")
 
