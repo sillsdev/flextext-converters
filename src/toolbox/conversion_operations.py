@@ -1,4 +1,9 @@
-from flextext_operations import make_flextext_tagline, make_tx_line
+from flextext_operations import (
+    make_f_line,
+    make_flextext_tagline,
+    make_g_line,
+    make_u_line,
+)
 
 
 def convert(toolbox_data, markers):
@@ -29,11 +34,11 @@ def convert(toolbox_data, markers):
 
             text = ""
             if text_type == "F":
-                text = ""
+                text = make_f_line(markers[td_key], toolbox_data[td_key])
             elif text_type == "G":
-                text = ""
+                text = make_g_line(markers[td_key], toolbox_data[td_key])
             elif text_type == "U":
-                text = make_tx_line(markers[td_key], toolbox_data[td_key])
+                text = make_u_line(markers[td_key], toolbox_data[td_key])
 
             converted_data += text
 

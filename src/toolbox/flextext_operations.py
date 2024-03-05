@@ -9,15 +9,15 @@ def make_flextext_tagline(tag_name, modifiers_dict):
     return tagline
 
 
-def make_ft_line(marker, toolbox_content):
+def make_f_line(marker, toolbox_content):
     pass
 
 
-def make_ge_line(marker, toolbox_content):
+def make_g_line(marker, toolbox_content):
     pass
 
 
-def make_tx_line(marker, toolbox_content):
+def make_u_line(marker, toolbox_content):
     modifiers = {"type": "txt"}
     if marker.keys().__contains__("lng"):
         modifiers["lang"] = marker["lng"]
