@@ -11,12 +11,6 @@
             <words>
               <word guid="e91a7bd6-a79a-4d2c-9e70-2659fc183065">
                 <item type="txt" lang="ext">This</item>
-                <morphemes>
-                  <morph>
-                    <item type="txt" lang="ext">this</item>
-                  </morph>
-                </morphemes>
-                <item type="gls" lang="en">this</item>
               </word>
               <word guid="c9f72821-7fa5-4132-97bb-f461936273de">
                 <item type="txt" lang="ext">has</item>
