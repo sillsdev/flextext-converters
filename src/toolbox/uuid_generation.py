@@ -9,7 +9,9 @@ def generate_uuid(string_array):
         return str(uuid.uuid4())
 
     # Verify input is a list of strings
-    if not isinstance(string_array, list) or not all(isinstance(item, str) for item in string_array):
+    if not isinstance(string_array, list) or not all(
+        isinstance(item, str) for item in string_array
+    ):
         raise TypeError("Input must be a list of strings")
 
     temp_uuid = str(uuid.uuid4())
