@@ -1,12 +1,107 @@
-import pytest
+"""
+    Author: Andrew Quick
 
-from toolbox.toolbox_operations import toolbox_file_reader, toolbox_data_parser
+    Created: March 4, 2024
+
+    Project: Toolbox to Fieldworks Text Migration (LightSys)
+
+    Description:
+        testing file for toolbox operations
+"""
+
+from unittest import TestCase
+
+from toolbox.toolbox_operations import toolbox_data_parser, toolbox_file_reader
 
 
 def test_toolbox_file_reader():
-    assert toolbox_file_reader("")
+    toolbox_test_data = (
+        "\\_sh v3.0  621  Text\n\n\\id toolbox_test\n\\ref\n"
+        "\\tx This has a translation.\n"
+        "\\ft It is a freeform translation.\n\\nt"
+    )
+    file = "tests/example_test_files/toolbox_test.sfm"
+    assert toolbox_file_reader(file) == toolbox_test_data
+
+
+def test_toolbox_file_reader1():
+    toolbox_test_data = (
+        "\\_sh v3.0  213  Text\n\n\\id toolbox_test1\n\\ref\n"
+        "\\tx This is some test data\n\\ge this is some test data\n"
+        "\n\\ft\n\\nt"
+    )
+    file = "tests/example_test_files/toolbox_test1.sfm"
+    assert toolbox_file_reader(file) == toolbox_test_data
+
+
+def test_toolbox_file_reader2():
+    toolbox_test_data = (
+        "\\_sh v3.0  543  Text\n\n\\id toolbox_test2\n\\ref\n"
+        "\\tx Awesome method is doing its job\n"
+        "\\ft Super cool method is working\n"
+        "\\ge keep up the good work\n"
+        "\n\n\\nt"
+    )
+    file = "tests/example_test_files/toolbox_test2.sfm"
+    assert toolbox_file_reader(file) == toolbox_test_data
 
 
 def test_toolbox_data_parser():
-    assert toolbox_data_parser("")
+    toolbox_test_data = (
+        "\\_sh v3.0  621  Text\n\n\\id toolbox_test\n\\ref\n"
+        "\\tx This has a translation.\n"
+        "\\ft It is a freeform translation.\n\\nt"
+    )
+    toolbox_test_data_dict = {
+        "\\_sh": "v3.0  621  Text",
+        "\\id": "toolbox_test",
+        "\\ref": "",
+        "\\tx": "This has a translation.",
+        "\\ft": "It is a freeform translation.",
+        "\\nt": "",
+    }
+    TestCase().assertDictEqual(
+        toolbox_data_parser(toolbox_test_data), toolbox_test_data_dict
+    )
 
+
+def test_toolbox_data_parser1():
+    toolbox_test_data = (
+        "\\_sh v3.0  213  Text\n\n\\id toolbox_test1\n\\ref\n"
+        "\\tx This is some test data\n\\ge this is some test data\n"
+        "\n\\ft\n\\nt"
+    )
+    toolbox_test_data_dict = {
+        "\\_sh": "v3.0  213  Text",
+        "\\id": "toolbox_test1",
+        "\\ref": "",
+        "\\tx": "This is some test data",
+        "\\ge": "this is some test data",
+        "\\ft": "",
+        "\\nt": "",
+    }
+    TestCase().assertDictEqual(
+        toolbox_data_parser(toolbox_test_data), toolbox_test_data_dict
+    )
+
+
+def test_toolbox_data_parser2():
+    toolbox_test_data = (
+        "\\_sh v3.0  543  Text\n\n\\id toolbox_test2\n\\ref\n"
+        "\\tx Awesome method is doing its job\n"
+        "\\ft Super cool method is working\n"
+        "\\ge keep up the good work\n"
+        "\n\n\\nt"
+    )
+    toolbox_test_data_dict = {
+        "\\_sh": "v3.0  543  Text",
+        "\\id": "toolbox_test2",
+        "\\ref": "",
+        "\\tx": "Awesome method is doing its job",
+        "\\ft": "Super cool method is working",
+        "\\ge": "keep up the good work",
+        "\\nt": "",
+    }
+    TestCase().assertDictEqual(
+        toolbox_data_parser(toolbox_test_data), toolbox_test_data_dict
+    )
