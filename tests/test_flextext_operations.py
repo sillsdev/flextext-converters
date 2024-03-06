@@ -1,4 +1,9 @@
-from toolbox.flextext_operations import make_flextext_tagline, make_u_line
+from toolbox.flextext_operations import (
+    make_f_line,
+    make_flextext_tagline,
+    make_g_line,
+    make_u_line,
+)
 
 one_modifier = {"guid": "e3cb6669-59c6-4af4-9c1d-0903bbb742ea"}
 two_modifiers = {"type": "title", "lang": "ext"}
@@ -27,6 +32,28 @@ def test_tagline_two_modifiers():
 
 def test_tagline_ending():
     assert make_flextext_tagline("\\paragraphs", None) == tagline_ending
+
+
+def test_f_line():
+    assert make_f_line({}, "This has a translation.") == u_line
+
+
+def test_f_mod_line():
+    assert (
+        make_f_line({"type": "txt", "lng": "ext"}, "This has a translation.")
+        == u_mod_line
+    )
+
+
+def test_g_line():
+    assert make_g_line({}, "This has a translation.") == u_line
+
+
+def test_g_mod_line():
+    assert (
+        make_g_line({"type": "txt", "lng": "ext"}, "This has a translation.")
+        == u_mod_line
+    )
 
 
 def test_u_line():

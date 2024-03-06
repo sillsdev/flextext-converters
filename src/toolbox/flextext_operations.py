@@ -10,11 +10,11 @@ def make_flextext_tagline(tag_name, modifiers_dict):
 
 
 def make_f_line(marker, toolbox_content):
-    pass
+    return make_u_line(marker, toolbox_content)
 
 
 def make_g_line(marker, toolbox_content):
-    pass
+    return make_u_line(marker, toolbox_content)
 
 
 def make_u_line(marker, toolbox_content):

@@ -4,6 +4,7 @@ from flextext_operations import (
     make_g_line,
     make_u_line,
 )
+from uuid_generation import generate_uuid
 
 
 def convert(toolbox_data, markers):
@@ -11,7 +12,7 @@ def convert(toolbox_data, markers):
     # make header
     header = [
         make_flextext_tagline("?xml", {"version": "1.0", "encoding": '"utf-8"?'}),
-        make_flextext_tagline("interlinear-text", {"guid": "TODO:QUID"}),
+        make_flextext_tagline("interlinear-text", {"guid": f"{generate_uuid(None)}"}),
     ]
 
     # make trailer
