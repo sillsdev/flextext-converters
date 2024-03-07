@@ -23,3 +23,5 @@ pep8-naming
 # Formatting.
 black
 isort
+
+xsdata
