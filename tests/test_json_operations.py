@@ -1,7 +1,6 @@
 import os
 
-from toolbox.json_operations import save_map_to_json
-from toolbox.json_operations import load_map_from_json
+from toolbox.json_operations import load_map_from_json, save_map_to_json
 
 # Duplicated from test_marker_operations
 # test_map1
@@ -31,13 +30,10 @@ def test_json_creation():
 
 
 def test_json_contents_simple():
-    output_path = "./src/toolbox/json_marker_files/test_json_contents_simple.json"
     save_map_to_json(test_map1, "test_json_contents_simple")
     assert (test_map1 == load_map_from_json("test_json_contents_simple")) is True
 
 
 def test_json_contents_complex():
-    output_path = "./src/toolbox/json_marker_files/test_json_contents_complex.json"
     save_map_to_json(test_map2, "test_json_contents_complex")
     assert (test_map2 == load_map_from_json("test_json_contents_complex")) is True
-
