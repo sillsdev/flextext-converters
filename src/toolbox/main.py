@@ -60,7 +60,7 @@ def main():
         markers = read_markers(marker_filename)
 
         # ask user about markers
-        defined_markers = markers  # TODO call define_markers(markers)
+        # defined_markers = markers  # TODO call define_markers(markers)
 
         # output json markers
         # TODO json_marker_filename
