@@ -1,54 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <document version="2">
-  <interlinear-text guid="6ba18b1d-4860-4687-a977-111f5a5d7347">
-    <item type="title" lang="ext">Unglossed</item>
+  <interlinear-text guid="73300528-d330-4bc2-8530-e0ba275c7cd0">
+    <item type="title" lang="ext">ReallyUnglossed</item>
     <paragraphs>
-      <paragraph guid="acb09d72-92f0-42c1-ac32-b466ffde1d1a">
+      <paragraph guid="3a24866b-2a6b-485f-903e-1a51f9777141">
         <phrases>
-          <phrase guid="29609349-8e4f-4ec7-babc-857a84c62a8a">
-            <item type="txt" lang="ext">This text is unglossed.</item>
+          <phrase guid="92ba28e6-a1dd-4d16-9677-d9b10bf2910b">
+            <item type="txt" lang="ext">Lorem ipsum.</item>
             <item type="segnum" lang="en">1</item>
             <words>
-              <word guid="e91a7bd6-a79a-4d2c-9e70-2659fc183065">
-                <item type="txt" lang="ext">This</item>
-                <morphemes>
-                  <morph>
-                    <item type="txt" lang="ext">this</item>
-                  </morph>
-                </morphemes>
-                <item type="gls" lang="en">this</item>
+              <word guid="7f71f798-9e8a-4318-abc4-7b3bfd88b95f">
+                <item type="txt" lang="ext">Lorem</item>
               </word>
-              <word guid="b00841d9-2352-49a4-ada9-7664501d0703">
-                <item type="txt" lang="ext">text</item>
-                <morphemes>
-                  <morph type="stem" guid="d7f713e8-e8cf-11d3-9764-00c04f186933">
-                    <item type="txt" lang="ext">text</item>
-                    <item type="cf" lang="ext">text</item>
-                    <item type="gls" lang="en">words</item>
-                    <item type="msa" lang="en">n</item>
-                  </morph>
-                </morphemes>
-                <item type="gls" lang="en">words</item>
-                <item type="pos" lang="en">n</item>
-              </word>
-              <word guid="b4462c1d-b464-41f9-95e8-ae50062f4816">
-                <item type="txt" lang="ext">is</item>
-                <morphemes>
-                  <morph>
-                    <item type="txt" lang="ext">is</item>
-                  </morph>
-                </morphemes>
-                <item type="gls" lang="en">is</item>
-              </word>
-              <word guid="aab24900-b5ff-4e80-af96-a6fa73d3054d">
-                <item type="txt" lang="ext">unglossed</item>
+              <word guid="35fb0243-2485-4528-9f58-d76bb46d385a">
+                <item type="txt" lang="ext">ipsum</item>
               </word>
               <word>
                 <item type="punct" lang="ext">.</item>
               </word>
             </words>
             <item type="gls" lang="en"></item>
-            <item type="lit" lang="en"></item>
           </phrase>
         </phrases>
       </paragraph>
