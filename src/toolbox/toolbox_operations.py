@@ -23,6 +23,7 @@
 
 from typing import List
 
+
 def toolbox_file_reader(filename):
     with open(filename, "r") as f:
         toolbox_data = f.read()
@@ -50,4 +51,3 @@ def toolbox_data_parser(toolbox_data):
         final_list.append(paragraph_list)  # add list of paragraphs to final list
 
     return final_list
-

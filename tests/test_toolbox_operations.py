@@ -91,7 +91,8 @@ def test_toolbox_data_parser1():
     print("\nMethod List:\n", toolbox_data_parser(toolbox_test_data))
     print("\nTest List:\n", toolbox_test_data_list)
     TestCase().assertTrue(
-        toolbox_data_parser(toolbox_test_data) == toolbox_test_data_list    )
+        toolbox_data_parser(toolbox_test_data) == toolbox_test_data_list
+    )
 
 
 def test_toolbox_data_parser2():
