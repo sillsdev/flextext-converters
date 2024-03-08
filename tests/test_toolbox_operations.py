@@ -47,7 +47,7 @@ def test_toolbox_file_reader2():
     )
     file = "tests/example_test_files/toolbox_test2.sfm"
     assert toolbox_file_reader(file) == toolbox_test_data
-    
+
 
 def test_toolbox_data_parser():
     toolbox_test_data = (
