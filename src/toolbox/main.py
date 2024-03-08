@@ -1,11 +1,9 @@
-import os
-
 from conversion_operations import convert
+from file_picker_operations import file_picker
 from json_operations import load_map_from_json, save_map_to_json
 from marker_operations import define_markers, read_markers
 from output_operations import output_flextext
 from toolbox_operations import toolbox_data_parser, toolbox_file_reader
-from file_picker_operations import file_picker
 
 
 # method to turn a marker filename into a json marker filename
@@ -24,20 +22,18 @@ def main():
     )
 
     if answer.upper() == "Y":
-        print('Select a defined JSON marker file')
+        print("Select a defined JSON marker file")
         json_marker_filename = file_picker()
 
         while json_marker_filename == "" or not json_marker_filename.endswith(".json"):
-            print('Error; invalid file. Select a defined JSON marker file')
+            print("Error; invalid file. Select a defined JSON marker file")
             json_marker_filename = file_picker()
     else:
-        print('Select a marker file')
+        print("Select a marker file")
         marker_filename = file_picker()
 
-        while marker_filename == "" or not marker_filename.endswith(
-            ".typ"
-        ):
-            print('Error; invalid file. Select a marker file')
+        while marker_filename == "" or not marker_filename.endswith(".typ"):
+            print("Error; invalid file. Select a marker file")
             marker_filename = file_picker()
 
         # get raw markers
@@ -54,10 +50,10 @@ def main():
     json_markers = load_map_from_json(json_marker_filename)
 
     # toolbox filename
-    print('Select a Toolbox file to convert')
+    print("Select a Toolbox file to convert")
     toolbox_filename = file_picker()
     while toolbox_filename == "":
-        print('Error; invalid file. Select a Toolbox file to convert')
+        print("Error; invalid file. Select a Toolbox file to convert")
         toolbox_filename = file_picker()
 
     # fieldworks filename
