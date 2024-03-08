@@ -50,7 +50,6 @@ def read_markers(inputfile):
                     word2 = split_next_line[0]
                 else:
                     # Variable designation for marker
-                    print(split_next_line)
                     variable = split_next_line[1]
                     map2[word2] = variable
                     next_line = marker_file[list_index]
@@ -65,24 +64,24 @@ def define_markers(given_map):
     # Iterates through the marker keys of the given map
     for key in given_map.keys():
         answer = input(
-            "For the marker with code "
+            "For the marker with code <"
             + key
-            + ", and language "
-            + given_map[key]["lng"]
-            + ", enter a number corresponding to type.\n 1: Word | 2: Morphemes | 3: Lex. Entries | "
+            + ">, and language <"
+            + given_map[key]["\\lng"]
+            + ">, enter a number corresponding to type.\n 1: Word | 2: Morphemes | 3: Lex. Entries | "
             "4: Lex. Gloss | 5: Lex. Gram. Info. | 6: Word Gloss | 7: Word Cat. | 8: Free Translation | "
-            "9: Literal Translation | 10: Note"
+            "9: Literal Translation | 10: Note\n"
         )
         # Adds the given type as a key/value combo into the map
         while not answer.isnumeric() or int(answer) < 1 or int(answer) > 10:
             answer = input(
-                "Error: For the marker with code "
+                "Error: For the marker with code <"
                 + key
-                + ", and language "
+                + ">, and language <"
                 + given_map[key]["lng"]
-                + ", enter a number corresponding to type.\n 1: Word | 2: Morphemes | 3: Lex. Entries | "
+                + ">, enter a number corresponding to type.\n 1: Word | 2: Morphemes | 3: Lex. Entries | "
                 "4: Lex. Gloss | 5: Lex. Gram. Info. | 6: Word Gloss | 7: Word Cat. | 8: Free Translation | "
-                "9: Literal Translation | 10: Note"
+                "9: Literal Translation | 10: Note\n"
             )
         given_map[key]["text_type"] = int(answer)
         return given_map
