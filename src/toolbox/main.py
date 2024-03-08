@@ -15,7 +15,7 @@ def make_json_filename(marker_filename):
 
 
 def main():
-    print("<<< Toolbox File Converter >>>")
+    print("<<< Toolbox to FieldWorks File Converter >>>\n")
 
     # marker filename
     answer = input(
@@ -72,12 +72,11 @@ def main():
     # convert data
     converted_xml = convert(toolbox_data, json_markers)
 
-    # print(converted_xml)
-
     # output the converted data
     output_flextext(fieldworks_filename, converted_xml)
 
-    print("<<< Converter Termination >>>")
+    print(f'Converter successful\nFieldWorks file located at: "{fieldworks_filename}"')
+    print("\n<<< Converter Termination >>>")
 
 
 if __name__ == "__main__":
