@@ -1,4 +1,5 @@
 import xml.dom.minidom
+from typing import List
 
 from xsdata.formats.dataclass.serializers import XmlSerializer
 
@@ -114,7 +115,48 @@ def convert(toolbox_data, markers):
 
                 # word gloss
                 case 6:
-                    pass
+                    # item
+                    phrase_item = Item()
+                    phrase_item.type_value = "gls"
+                    phrase_item.lang = language
+                    phrase_item.value = text
+                    xml_phrase.item.append(phrase_item)
+
+                    # words
+                    xml_word_list: List[
+                        "Document.InterlinearText.Paragraphs.Paragraph.Phrases.Phrase.Words.Word"
+                    ] = []
+                    if xml_phrase.words is not None:
+                        xml_word_list = xml_phrase.words.word
+                    for i in range(len(xml_word_list)):
+                        xml_word = xml_word_list[i]
+                        txt_item = xml_word.item[0]
+                        gloss_word = text[i]
+                        gloss_item = Item()
+                        gloss_item.type_value = "gls"
+                        gloss_item.lang = language
+                        gloss_item.value = gloss_word
+                        xml_word.item.append(gloss_item)
+
+                        # morph item text
+                        xml_morph_txt_item = Item()
+                        xml_morph_txt_item.value = txt_item.value
+                        xml_morph_txt_item.lang = txt_item.lang
+                        xml_morph_txt_item.type_value = txt_item.type_value
+
+                        # morph item gloss
+                        xml_morph_gloss_item = Item()
+                        xml_morph_gloss_item.value = gloss_item.value
+                        xml_morph_gloss_item.lang = gloss_item.lang
+                        xml_morph_gloss_item.type_value = gloss_item.type_value
+
+                        # morphemes and morph
+                        xml_morphemes = xml_word.Morphemes()
+                        xml_morph = xml_morphemes.Morph()
+                        xml_morph.item.append(xml_morph_txt_item)
+                        xml_morph.item.append(xml_morph_gloss_item)
+                        xml_morphemes.morph.append(xml_morph)
+                        xml_word.morphemes.append(xml_morphemes)
 
                 # word cat
                 case 7:

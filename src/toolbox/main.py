@@ -1,6 +1,5 @@
-import os
-
 from conversion_operations import convert
+from file_picker_operations import file_picker
 from json_operations import load_map_from_json, save_map_to_json
 from marker_operations import define_markers, read_markers
 from output_operations import output_flextext
@@ -15,7 +14,7 @@ def make_json_filename(marker_filename):
 
 
 def main():
-    print("<<< Toolbox File Converter >>>")
+    print("<<< Toolbox to FieldWorks File Converter >>>\n")
 
     # marker filename
     answer = input(
@@ -23,25 +22,19 @@ def main():
     )
 
     if answer.upper() == "Y":
-        json_marker_filename = (
-            f"json_marker_files/"
-            f"{input('Input name of defined JSON marker file (in json_marker_files folder): ')}"
-        )
+        print("Select a defined JSON marker file")
+        json_marker_filename = file_picker()
 
-        while not os.path.isfile(
-            json_marker_filename
-        ) or not json_marker_filename.endswith(".json"):
-            json_marker_filename = input(
-                f"json_marker_files/"
-                f"{'Error; invalid file. Input name of defined JSON marker file: '}"
-            )
+        while json_marker_filename == "" or not json_marker_filename.endswith(".json"):
+            print("Error; invalid file. Select a defined JSON marker file")
+            json_marker_filename = file_picker()
     else:
-        marker_filename = f"marker_files/{input('Input name of marker file (in marker_files folder): ')}"
+        print("Select a marker file")
+        marker_filename = file_picker()
 
-        while not os.path.isfile(marker_filename) or not marker_filename.endswith(
-            ".typ"
-        ):
-            marker_filename = f"marker_files/{input('Error; invalid file. Input name of marker file: ')}"
+        while marker_filename == "" or not marker_filename.endswith(".typ"):
+            print("Error; invalid file. Select a marker file")
+            marker_filename = file_picker()
 
         # get raw markers
         raw_markers = read_markers(marker_filename)
@@ -57,11 +50,11 @@ def main():
     json_markers = load_map_from_json(json_marker_filename)
 
     # toolbox filename
-    toolbox_filename = f"toolbox_files/{input('Input name of Toolbox file to convert (in toolbox_files folder): ')}"
-    while not os.path.isfile(toolbox_filename):
-        toolbox_filename = input(
-            "Error; invalid file. Input name of Toolbox file to convert: "
-        )
+    print("Select a Toolbox file to convert")
+    toolbox_filename = file_picker()
+    while toolbox_filename == "":
+        print("Error; invalid file. Select a Toolbox file to convert")
+        toolbox_filename = file_picker()
 
     # fieldworks filename
     fieldworks_filename = f"fieldworks_files/{input('Input name of FieldWorks file to create (to fieldworks_files folder): ')}"
@@ -72,12 +65,11 @@ def main():
     # convert data
     converted_xml = convert(toolbox_data, json_markers)
 
-    # print(converted_xml)
-
     # output the converted data
     output_flextext(fieldworks_filename, converted_xml)
 
-    print("<<< Converter Termination >>>")
+    print(f'Converter successful\nFieldWorks file located at: "{fieldworks_filename}"')
+    print("\n<<< Converter Termination >>>")
 
 
 if __name__ == "__main__":
