@@ -1,25 +1,28 @@
 <?xml version="1.0" ?>
 <document version="2">
-	<interlinear-text guid="4cd3c9cc-32ea-4fdc-a26a-e7814fe80ed3">
+	<interlinear-text guid="58e0cec5-0539-4613-a26b-a3146b641633">
 		<item type="title" lang="en">Freeform</item>
 		<paragraphs>
-			<paragraph guid="52133ee5-1039-4b55-a3bb-50386afaf6c3">
+			<paragraph guid="0fc45116-a005-4716-90da-24aa4a132c11">
 				<phrases>
-					<phrase guid="12ab6184-212e-4a20-964e-fb8fea11c23b">
-						<item type="txt" lang="ext">This has a translation.</item>
-						<item type="gls" lang="en">It is a freeform translation.</item>
+					<phrase guid="370889a4-fa63-4f06-bfd1-5b610dba42e2">
+						<item type="txt" lang="ext">This has a translation .</item>
+						<item type="gls" lang="en">It is a freeform translation .</item>
 						<words>
-							<word guid="fe8b6b25-788a-4da6-a2e5-98cab3070599" type="phrase">
+							<word guid="2f687f02-83aa-4678-b6e6-9d625e49100f" type="phrase">
 								<item type="txt" lang="ext">This</item>
 							</word>
-							<word guid="fa078a74-9625-4834-8f01-2e1a386e1f41" type="phrase">
+							<word guid="2cd2d375-4948-4577-adab-1cca51e99021" type="phrase">
 								<item type="txt" lang="ext">has</item>
 							</word>
-							<word guid="d70a7afa-da78-4aff-9819-bfa6d5f89970" type="phrase">
+							<word guid="4d34b00d-eabe-496c-8591-9900d965a5e9" type="phrase">
 								<item type="txt" lang="ext">a</item>
 							</word>
-							<word guid="664fc041-e277-4073-b0d5-f55db3cb4b7a" type="phrase">
-								<item type="txt" lang="ext">translation.</item>
+							<word guid="e4f01f22-757e-4db0-9d47-c1a31f93f508" type="phrase">
+								<item type="txt" lang="ext">translation</item>
+							</word>
+							<word guid="1c547daa-3753-4148-acc6-c32053e7f9f4" type="phrase">
+								<item type="punct" lang="ext">.</item>
 							</word>
 						</words>
 					</phrase>

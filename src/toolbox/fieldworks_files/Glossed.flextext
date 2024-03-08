@@ -1,15 +1,15 @@
 <?xml version="1.0" ?>
 <document version="2">
-	<interlinear-text guid="98828d37-f2d5-4e56-8725-8eab1c13cdf5">
+	<interlinear-text guid="d4f865f6-1ba8-4942-a103-bfd3954e4e86">
 		<item type="title" lang="en">Glossed</item>
 		<paragraphs>
-			<paragraph guid="e8b9eff0-6fa1-4460-b32e-9d787a5a1be1">
+			<paragraph guid="f4aa3f99-1609-46ce-a1f6-c31094fed9e9">
 				<phrases>
-					<phrase guid="6bb2903b-bbc1-430f-b763-274d8280b51a">
-						<item type="txt" lang="ext">This text is glossed.</item>
+					<phrase guid="b97e8f01-376d-4ec2-889d-ebc217ce0d4d">
+						<item type="txt" lang="ext">This text is glossed .</item>
 						<item type="gls" lang="en">this text is glossed</item>
 						<words>
-							<word guid="5aa80851-b252-4d3b-bd46-9506a9c52000" type="phrase">
+							<word guid="6b77fe3f-19c2-447a-8045-9fee4818c271" type="phrase">
 								<item type="txt" lang="ext">This</item>
 								<item type="gls" lang="en">this</item>
 								<morphemes>
@@ -19,7 +19,7 @@
 									</morph>
 								</morphemes>
 							</word>
-							<word guid="7aacc823-96e5-44d3-a5a4-a587742ef4f2" type="phrase">
+							<word guid="373cfd81-9573-47ff-8928-0faf7847f7bb" type="phrase">
 								<item type="txt" lang="ext">text</item>
 								<item type="gls" lang="en">text</item>
 								<morphemes>
@@ -29,7 +29,7 @@
 									</morph>
 								</morphemes>
 							</word>
-							<word guid="1b748347-d677-4da6-9382-f410975a9471" type="phrase">
+							<word guid="3b12db20-ab38-4564-9e56-070407b7cbce" type="phrase">
 								<item type="txt" lang="ext">is</item>
 								<item type="gls" lang="en">is</item>
 								<morphemes>
@@ -39,19 +39,22 @@
 									</morph>
 								</morphemes>
 							</word>
-							<word guid="68af8e0b-fff7-4dd2-bb13-aef672092494" type="phrase">
-								<item type="txt" lang="ext">glossed.</item>
+							<word guid="ab52f18b-73f9-44ab-9121-74a2f69ec6ad" type="phrase">
+								<item type="txt" lang="ext">glossed</item>
 								<item type="gls" lang="en">glossed</item>
 								<morphemes>
 									<morph>
-										<item type="txt" lang="ext">glossed.</item>
+										<item type="txt" lang="ext">glossed</item>
 										<item type="gls" lang="en">glossed</item>
 									</morph>
 								</morphemes>
 							</word>
+							<word guid="834d31df-1a50-4fd3-bca0-843cae0513cc" type="phrase">
+								<item type="punct" lang="ext">.</item>
+							</word>
 						</words>
 					</phrase>
-					<phrase guid="ee47036b-b49a-4b79-aacc-5d0aa5c4fc12"/>
+					<phrase guid="7c7554a6-5f12-4ae2-b265-48f9e6216558"/>
 				</phrases>
 			</paragraph>
 		</paragraphs>
