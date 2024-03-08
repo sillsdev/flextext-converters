@@ -40,14 +40,14 @@ def test_toolbox_file_reader2():
         "\\tx Awesome method is doing its job\n"
         "\\ft Super cool method is working.\n"
         "\n\\tx keep up the good work.\n"
-        "\\mg doing great¿\n"
+        "\\mg doing great\n"
         "\n\\tx this\nis a\ncool\nmessage\n"
         "\\mg nice, what about the other things\n"
         "\n\\nt"
     )
     file = "tests/example_test_files/toolbox_test2.sfm"
     assert toolbox_file_reader(file) == toolbox_test_data
-
+    
 
 def test_toolbox_data_parser():
     toolbox_test_data = (
@@ -101,7 +101,7 @@ def test_toolbox_data_parser2():
         "\\tx Awesome method is doing its job\n"
         "\\ft Super cool method is working.\n"
         "\n\\tx keep up the good work.\n"
-        "\\mg doing great¿\n"
+        "\\mg doing great\n"
         "\n\\tx this\nis a\ncool\nmessage\n"
         "\\mg nice, what about the other things\n"
         "\n\\nt"
@@ -116,7 +116,7 @@ def test_toolbox_data_parser2():
         ],
         [
             ["\\tx", "keep", "up", "the", "good", "work", "."],
-            ["\\mg", "doing", "great", "¿"],
+            ["\\mg", "doing", "great"],
         ],
         [
             ["\\tx", "this", "is", "a", "cool", "message"],
