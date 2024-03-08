@@ -72,12 +72,10 @@ def main():
     # convert data
     converted_xml = convert(toolbox_data, json_markers)
 
-    # print(converted_xml)
-
     # output the converted data
     output_flextext(fieldworks_filename, converted_xml)
 
-    print(f"Converter successful\nFieldWorks file located at: fieldworks_files/{fieldworks_filename}")
+    print(f"Converter successful\nFieldWorks file located at: \"{fieldworks_filename}\"")
     print("\n<<< Converter Termination >>>")
 
 

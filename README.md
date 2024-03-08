@@ -1,4 +1,4 @@
-# flex-text-converters
+# flextext converters
 Converters to and from flextext interlinear format
 
 <br>
