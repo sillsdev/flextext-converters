@@ -75,7 +75,7 @@ def main():
     # output the converted data
     output_flextext(fieldworks_filename, converted_xml)
 
-    print(f"Converter successful\nFieldWorks file located at: \"{fieldworks_filename}\"")
+    print(f'Converter successful\nFieldWorks file located at: "{fieldworks_filename}"')
     print("\n<<< Converter Termination >>>")
 
 
