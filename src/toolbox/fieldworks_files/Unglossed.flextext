@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<document version="2">
+	<interlinear-text guid="53868a09-9e06-4d6e-9f36-5107d7fa789d">
+		<item type="title" lang="en">ReallyUnglossed</item>
+		<paragraphs>
+			<paragraph guid="12c80c6a-22fc-44a7-a8ba-5eb29c8cdf21">
+				<phrases>
+					<phrase guid="5fef7c30-1a19-4fee-a805-0053eb41ca2e">
+						<item type="txt" lang="en">Lorem ipsum.</item>
+						<words>
+							<word guid="6332c9de-5911-401d-821d-ecac966e6614" type="phrase">
+								<item type="txt" lang="en">Lorem</item>
+							</word>
+							<word guid="fa6123f4-832c-4ede-ada3-c6837c62041c" type="phrase">
+								<item type="txt" lang="en">ipsum.</item>
+							</word>
+						</words>
+					</phrase>
+				</phrases>
+			</paragraph>
+		</paragraphs>
+	</interlinear-text>
+</document>

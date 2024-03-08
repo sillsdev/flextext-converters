@@ -84,7 +84,7 @@ def define_markers(given_map):
                 "9: Literal Translation | 10: Note\n"
             )
         given_map[key]["text_type"] = int(answer)
-        return given_map
+    return given_map
 
 
 # This code is an attempt at implementing mkrset functionality - currently nonfunctional
