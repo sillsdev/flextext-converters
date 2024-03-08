@@ -3,7 +3,7 @@
 
     Created: March 4, 2024
 
-    Project: Toolbox to Fieldworks Text Migration (LightSys)
+    Project: Toolbox to FieldWorks Text Migration (LightSys)
 
     Description:
         testing file for toolbox operations

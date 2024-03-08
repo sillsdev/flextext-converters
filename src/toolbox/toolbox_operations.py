@@ -3,7 +3,7 @@
 
     Created: March 4, 2024
 
-    Project: Toolbox to Fieldworks Text Migration (LightSys)
+    Project: Toolbox to FieldWorks Text Migration (LightSys)
 
     File: toolbox_operations.py
 
@@ -24,7 +24,7 @@
 from typing import List
 
 
-def toolbox_file_reader(filename):
+def toolbox_file_reader(filename): # read in toolbox file
     with open(filename, "r") as f:
         toolbox_data = f.read()
 
@@ -42,7 +42,7 @@ def toolbox_data_parser(toolbox_data):
         lines = paragraph.split("\n")  # list of each line in the paragraph
         paragraph_list: List[List[str]] = []
         for line in lines:
-            if line == "":
+            if line == "":  # if line is empty
                 continue
             if "\\" != line[0]:  # if line is part of the marker above
                 words = line.split()
