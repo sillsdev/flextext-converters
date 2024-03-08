@@ -1,6 +1,6 @@
 from xsdata.formats.dataclass.serializers import XmlSerializer
 
-from src.toolbox.flextext_models.flextext import Document, Item
+from toolbox.flextext_models import Document, Item
 from toolbox.uuid_generation import generate_uuid
 
 
