@@ -42,6 +42,8 @@ def toolbox_data_parser(toolbox_data):
         lines = paragraph.split("\n")  # list of each line in the paragraph
         paragraph_list: List[List[str]] = []
         for line in lines:
+            if line == "":
+                continue
             if "\\" != line[0]:  # if line is part of the marker above
                 words = line.split()
                 paragraph_list[len(paragraph_list) - 1].extend(words)

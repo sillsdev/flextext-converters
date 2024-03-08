@@ -1,3 +1,5 @@
+import xml.dom.minidom
+
 from xsdata.formats.dataclass.serializers import XmlSerializer
 
 from toolbox.flextext_models import Document, Item
@@ -28,6 +30,18 @@ def convert(toolbox_data, markers):
     xml_paragraph.phrases = xml_phrases
 
     for phrase in toolbox_data:
+
+        # test if valid marker
+        is_valid = False
+        for line in phrase:
+            start_code = line[0]
+
+            if markers.keys().__contains__(start_code):
+                is_valid = True
+                break
+        if not is_valid:
+            continue
+
         # make phrase
         xml_phrase = xml_phrases.Phrase()
         xml_phrase.guid = generate_uuid(None)
@@ -35,9 +49,13 @@ def convert(toolbox_data, markers):
 
         for line in phrase:
             start_code = line[0]
+
+            if not markers.keys().__contains__(start_code):
+                continue
+
             marker = markers[start_code]
             text_type = int(marker["text_type"])
-            language = marker["lng"]
+            language = marker["\\lng"]
 
             match text_type:
                 # word
@@ -101,6 +119,11 @@ def convert(toolbox_data, markers):
                 case 10:
                     pass
 
+    # convert to xml
     xml_serializer = XmlSerializer()
     converted_xml = xml_serializer.render(obj=xml_doc, ns_map={})
+
+    temp = xml.dom.minidom.parseString(converted_xml)
+    converted_xml = temp.toprettyxml()
+
     return converted_xml

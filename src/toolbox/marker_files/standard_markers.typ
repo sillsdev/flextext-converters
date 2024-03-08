@@ -1,66 +1,66 @@
-\+mkr
+\+mkr tx
 \nam tx
 \lng en
 \-mkr
 
-\+mkr
+\+mkr txt
 \nam txt
 \lng en
 \-mkr
 
-\+mkr
+\+mkr ft
 \nam ft
 \lng en
 \-mkr
 
-\+mkr
+\+mkr g
 \nam g
 \lng en
 \-mkr
 
-\+mkr
+\+mkr title
 \nam title
 \-mkr
 
-\+mkr
+\+mkr name
 \nam name
 \-mkr
 
-\+mkr
+\+mkr id
 \nam id
 \-mkr
 
-\+mkr
+\+mkr p
 \nam p
 \-mkr
 
-\+mkr
+\+mkr m
 \nam m
 \-mkr
 
-\+mkr
+\+mkr mg
 \nam mg
 \-mkr
 
-\+mkr
+\+mkr f
 \nam f
 \-mkr
 
-\+mkr
+\+mkr notes
 \nam notes
 \-mkr
 
 # LexEntries
-\+mkr
+\+mkr le
 \nam le
 -mkr
 
 # LexPartOfSpeech
-\+mkr
+\+mkr lp
 \nam lp
 \-mkr
 
 # LiteralTranslation
-\+mkr
+\+mkr lt
 \nam lt
 \-mkr
