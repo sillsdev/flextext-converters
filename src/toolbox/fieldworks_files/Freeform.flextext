@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<document version="2">
+	<interlinear-text guid="df099356-b476-4264-a808-c60f0362e72a">
+		<item type="title" lang="en">Freeform</item>
+		<paragraphs>
+			<paragraph guid="0b0c71fd-8de8-446c-bc3d-88ca715932c8">
+				<phrases>
+					<phrase guid="92655401-f5cb-41ef-b2a3-7db3d7783870">
+						<item type="txt" lang="ext">This has a translation.</item>
+						<item type="gls" lang="en">It is a freeform translation.</item>
+						<words>
+							<word guid="ccb1486d-a2e2-4404-a6d4-ddc0ce57a9f5" type="phrase">
+								<item type="txt" lang="ext">This</item>
+							</word>
+							<word guid="8a448925-2e19-42c7-86a5-e8dacf357fad" type="phrase">
+								<item type="txt" lang="ext">has</item>
+							</word>
+							<word guid="8d558318-47f1-4ea9-8122-49c0149242b6" type="phrase">
+								<item type="txt" lang="ext">a</item>
+							</word>
+							<word guid="bb2fb84c-6a23-4ae1-aac4-949e72b77473" type="phrase">
+								<item type="txt" lang="ext">translation.</item>
+							</word>
+						</words>
+					</phrase>
+				</phrases>
+			</paragraph>
+		</paragraphs>
+	</interlinear-text>
+</document>
