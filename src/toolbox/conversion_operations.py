@@ -6,6 +6,14 @@ from toolbox.flextext_models import Document, Item
 from toolbox.uuid_generation import generate_uuid
 
 
+def make_title(xml_it, title_lang, title_value):
+    xml_title_item = Item()
+    xml_title_item.type_value = "title"
+    xml_title_item.lang = title_lang
+    xml_title_item.value = title_value
+    xml_it.item.append(xml_title_item)
+
+
 def convert(toolbox_data, markers):
     # make document
     xml_doc = Document()
@@ -15,8 +23,6 @@ def convert(toolbox_data, markers):
     xml_interlinear_text = xml_doc.InterlinearText()
     xml_interlinear_text.guid = generate_uuid(None)
     xml_doc.interlinear_text.append(xml_interlinear_text)
-
-    # assuming no title
 
     # paragraphs and paragraph
     xml_paragraphs = xml_interlinear_text.Paragraphs()
@@ -47,21 +53,27 @@ def convert(toolbox_data, markers):
         xml_phrase.guid = generate_uuid(None)
         xml_phrases.phrase.append(xml_phrase)
 
+        # loop through each translation for a phrase
         for line in phrase:
             start_code = line[0]
 
-            if not markers.keys().__contains__(start_code):
+            if not markers.keys().__contains__(start_code) or len(line) < 2:
                 continue
 
             marker = markers[start_code]
             text_type = int(marker["text_type"])
             language = marker["\\lng"]
+            text = line[1:]
+
+            # title
+            if start_code == "\\id":
+                make_title(xml_interlinear_text, language, text)
+                continue
 
             match text_type:
                 # word
                 case 1:
                     # item
-                    text = line[1:]
                     phrase_item = Item()
                     phrase_item.type_value = "txt"
                     phrase_item.lang = language
@@ -70,6 +82,7 @@ def convert(toolbox_data, markers):
 
                     # words
                     xml_words = xml_phrase.Words()
+                    xml_phrase.words = xml_words
 
                     # each word
                     for word in text:
@@ -109,7 +122,12 @@ def convert(toolbox_data, markers):
 
                 # free translation
                 case 8:
-                    pass
+                    # item
+                    phrase_item = Item()
+                    phrase_item.type_value = "gls"
+                    phrase_item.lang = language
+                    phrase_item.value = text
+                    xml_phrase.item.append(phrase_item)
 
                 # literal translation
                 case 9:

@@ -22,18 +22,19 @@ def main():
     )
 
     if answer.upper() == "Y":
-        json_marker_filename = input(
-            "Input name of previously defined JSON marker file: "
+        json_marker_filename = (
+            f"json_marker_files/"
+            f"{input('Input name of defined JSON marker file (in json_marker_files folder): ')}"
         )
 
         while not os.path.isfile(
             "json_marker_files/" + json_marker_filename
         ) or not json_marker_filename.endswith(".json"):
             json_marker_filename = input(
-                "Error; invalid file. Input name of previously defined JSON marker file: "
+                "Error; invalid file. Input name of defined JSON marker file: "
             )
     else:
-        marker_filename = input("Input name of marker file: ")
+        marker_filename = f"marker_files/{input('Input name of marker file (in marker_files folder): ')}"
 
         while not os.path.isfile(marker_filename) or not marker_filename.endswith(
             ".typ"
@@ -54,13 +55,13 @@ def main():
     json_markers = load_map_from_json(json_marker_filename)
 
     # toolbox filename
-    toolbox_filename = input("Input name of Toolbox file to convert: ")
+    toolbox_filename = f"toolbox_files/{input('Input name of Toolbox file to convert (in toolbox_files folder): ')}"
     while not os.path.isfile(toolbox_filename):
         toolbox_filename = input(
             "Error; invalid file. Input name of Toolbox file to convert: "
         )
 
-    fieldworks_filename = input("Input name of FieldWorks file to create: ")
+    fieldworks_filename = f"fieldworks_files/{input('Input name of FieldWorks file to create (to fieldworks_files folder): ')}"
 
     # get toolbox data
     toolbox_data = toolbox_data_parser(toolbox_file_reader(toolbox_filename))
