@@ -178,11 +178,19 @@ def convert(toolbox_data, markers):
 
                 # literal translation
                 case 9:
-                    pass
+                    phrase_item = Item()
+                    phrase_item.type_value = "lit"
+                    phrase_item.lang = language
+                    phrase_item.value = text
+                    xml_phrase.item.append(phrase_item)
 
                 # note
                 case 10:
-                    pass
+                    phrase_item = Item()
+                    phrase_item.type_value = "note"
+                    phrase_item.lang = language
+                    phrase_item.value = text
+                    xml_phrase.item.append(phrase_item)
 
     # convert to xml
     xml_serializer = XmlSerializer()
