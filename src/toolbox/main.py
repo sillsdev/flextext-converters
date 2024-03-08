@@ -22,12 +22,13 @@ def main():
     )
 
     if answer.upper() == "Y":
-        json_marker_filename = input(
-            "Input name of defined JSON marker file (in json_marker_files folder): "
+        json_marker_filename = (
+            f"json_marker_files/"
+            f"{input('Input name of defined JSON marker file (in json_marker_files folder): ')}"
         )
 
         while not os.path.isfile(
-            "json_marker_files/" + json_marker_filename
+            json_marker_filename
         ) or not json_marker_filename.endswith(".json"):
             json_marker_filename = input(
                 "Error; invalid file. Input name of defined JSON marker file: "
