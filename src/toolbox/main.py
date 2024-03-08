@@ -15,7 +15,7 @@ def make_json_filename(marker_filename):
 
 
 def main():
-    print("<<< Toolbox to Converter >>>")
+    print("<<< Toolbox File Converter >>>")
 
     # marker filename
     answer = input(
