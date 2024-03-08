@@ -1,5 +1,6 @@
-from xsdata.formats.dataclass.serializers import XmlSerializer
 import xml.dom.minidom
+
+from xsdata.formats.dataclass.serializers import XmlSerializer
 
 from toolbox.flextext_models import Document, Item
 from toolbox.uuid_generation import generate_uuid

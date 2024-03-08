@@ -2,8 +2,7 @@ import os
 
 from conversion_operations import convert
 from json_operations import load_map_from_json, save_map_to_json
-
-from marker_operations import read_markers, define_markers
+from marker_operations import define_markers, read_markers
 from output_operations import output_flextext
 from toolbox_operations import toolbox_data_parser, toolbox_file_reader
 
@@ -69,7 +68,7 @@ def main():
     # convert data
     converted_xml = convert(toolbox_data, json_markers)
 
-    #print(converted_xml)
+    # print(converted_xml)
 
     # output the converted data
     output_flextext(fieldworks_filename, converted_xml)
