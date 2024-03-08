@@ -28,7 +28,7 @@ def main():
         )
 
         while not os.path.isfile(
-            json_marker_filename
+            "json_marker_files/" + json_marker_filename
         ) or not json_marker_filename.endswith(".json"):
             json_marker_filename = input(
                 "Error; invalid file. Input name of defined JSON marker file: "
