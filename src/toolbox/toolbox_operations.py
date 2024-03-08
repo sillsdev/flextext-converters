@@ -8,7 +8,8 @@
     File: toolbox_operations.py
 
     Description:
-        File has two methods one for reading a toolbox file and one for parsing the read data
+        File has three methods one for reading a toolbox file and one for parsing the read data,
+        and a helper method for separating the punctuation from words
 
     Modification log:
         3-4-24:
@@ -18,13 +19,16 @@
             Reformat the toolbox parsing method
         3-7-24:
             Reformat the toolbox parsing method to lists
+        3-8-24:
+            Add punctuation parsing method
 
 """
 
+import unicodedata
 from typing import List
 
 
-def toolbox_file_reader(filename): # read in toolbox file
+def toolbox_file_reader(filename):  # read in toolbox file
     with open(filename, "r") as f:
         toolbox_data = f.read()
 
@@ -46,10 +50,32 @@ def toolbox_data_parser(toolbox_data):
                 continue
             if "\\" != line[0]:  # if line is part of the marker above
                 words = line.split()
+                words = punctuation_parser(words)
                 paragraph_list[len(paragraph_list) - 1].extend(words)
             else:
                 words = line.split()  # list of the words in the line
+                mkr = words[0]  # save marker
+                words = punctuation_parser(
+                    words[1:]
+                )  # parse the rest of the list for punctuation
+                words.insert(0, mkr)  # add marker back to the beginning
                 paragraph_list.append(words)  # add list of words to paragraph list
         final_list.append(paragraph_list)  # add list of paragraphs to final list
 
     return final_list
+
+
+def punctuation_parser(
+    w_list,
+):  # separate punctuation from words, and make it its own "word"
+    parsed_line = []
+
+    for word in w_list:
+        # check if the last character in punctuation using Unicode category
+        if unicodedata.category(word[-1])[0] == "P":
+            parsed_line.append(word[:-1])  # Append word without punctuation
+            parsed_line.append(word[-1])  # Append the punctuation as a separate "word"
+        else:
+            parsed_line.append(word)  # Append the word as is
+
+    return parsed_line
