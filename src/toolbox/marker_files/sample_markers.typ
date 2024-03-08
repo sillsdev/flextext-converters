@@ -1,4 +1,10 @@
 \+mkr tx
+\nam text
+\lng ext
+\-mkr
+
+\+mkr ft
+\nam freeform
 \lng en
 \-mkr
 

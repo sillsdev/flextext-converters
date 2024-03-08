@@ -24,8 +24,6 @@ def convert(toolbox_data, markers):
     xml_interlinear_text.guid = generate_uuid(None)
     xml_doc.interlinear_text.append(xml_interlinear_text)
 
-    # assuming no title
-
     # paragraphs and paragraph
     xml_paragraphs = xml_interlinear_text.Paragraphs()
     xml_paragraph = xml_paragraphs.Paragraph()
@@ -124,7 +122,12 @@ def convert(toolbox_data, markers):
 
                 # free translation
                 case 8:
-                    pass
+                    # item
+                    phrase_item = Item()
+                    phrase_item.type_value = "gls"
+                    phrase_item.lang = language
+                    phrase_item.value = text
+                    xml_phrase.item.append(phrase_item)
 
                 # literal translation
                 case 9:
