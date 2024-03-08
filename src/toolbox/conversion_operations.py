@@ -1,48 +1,106 @@
-from flextext_operations import (
-    make_f_line,
-    make_flextext_tagline,
-    make_g_line,
-    make_u_line,
-)
+from xsdata.formats.dataclass.serializers import XmlSerializer
+
+from src.toolbox.flextext_models import Document, Item
+from toolbox.uuid_generation import generate_uuid
 
 
 def convert(toolbox_data, markers):
+    # make document
+    xml_doc = Document()
+    xml_doc.version = "2"
 
-    # make header
-    header = [
-        make_flextext_tagline("?xml", {"version": "1.0", "encoding": '"utf-8"?'}),
-        make_flextext_tagline("interlinear-text", {"guid": "TODO:QUID"}),
-    ]
+    # interlinear_text
+    xml_interlinear_text = xml_doc.InterlinearText()
+    xml_interlinear_text.guid = generate_uuid(None)
+    xml_doc.interlinear_text.append(xml_interlinear_text)
 
-    # make trailer
-    trailer = [
-        make_flextext_tagline("/interlinear-text", None),
-        make_flextext_tagline("/document", None),
-    ]
+    # assuming no title
 
-    converted_data = header
+    # paragraphs and paragraph
+    xml_paragraphs = xml_interlinear_text.Paragraphs()
+    xml_paragraph = xml_paragraphs.Paragraph()
+    xml_paragraph.guid = generate_uuid(None)
+    xml_paragraphs.paragraph.append(xml_paragraph)
+    xml_interlinear_text.paragraphs.append(xml_paragraphs)
 
-    marker_keys = markers.keys()
-    for td_key in toolbox_data.keys():
+    # phrases
+    xml_phrases = xml_paragraph.Phrases()
+    xml_paragraph.phrases = xml_phrases
 
-        if td_key == "id":
-            if marker_keys.__contains__(td_key):
-                pass
+    for phrase in toolbox_data:
+        # make phrase
+        xml_phrase = xml_phrases.Phrase()
+        xml_phrase.guid = generate_uuid(None)
+        xml_phrases.phrase.append(xml_phrase)
 
-        if marker_keys.__contains__(td_key):
-            text_type = markers[td_key]["text_type"]
+        for line in phrase:
+            start_code = line[0]
+            marker = markers[start_code]
+            text_type = int(marker["text_type"])
+            language = marker["lng"]
 
-            text = ""
-            if text_type == "F":
-                text = make_f_line(markers[td_key], toolbox_data[td_key])
-            elif text_type == "G":
-                text = make_g_line(markers[td_key], toolbox_data[td_key])
-            elif text_type == "U":
-                text = make_u_line(markers[td_key], toolbox_data[td_key])
+            match text_type:
+                # word
+                case 1:
+                    # item
+                    text = line[1:]
+                    phrase_item = Item()
+                    phrase_item.type_value = "txt"
+                    phrase_item.lang = language
+                    phrase_item.value = text
+                    xml_phrase.item.append(phrase_item)
 
-            converted_data += text
+                    # words
+                    xml_words = xml_phrase.Words()
 
-    converted_data += trailer
+                    # each word
+                    for word in text:
+                        xml_word = xml_words.Word()
+                        xml_word.guid = generate_uuid(None)
 
-    print(converted_data)
-    return converted_data
+                        word_item = Item()
+                        word_item.type_value = "txt"
+                        word_item.lang = language
+                        word_item.value = word
+                        xml_word.item.append(word_item)
+                        xml_words.word.append(xml_word)
+
+                # morphemes
+                case 2:
+                    pass
+
+                # lex. entries
+                case 3:
+                    pass
+
+                # lex. gloss
+                case 4:
+                    pass
+
+                # lex. gram info
+                case 5:
+                    pass
+
+                # word gloss
+                case 6:
+                    pass
+
+                # word cat
+                case 7:
+                    pass
+
+                # free translation
+                case 8:
+                    pass
+
+                # literal translation
+                case 9:
+                    pass
+
+                # note
+                case 10:
+                    pass
+
+    xml_serializer = XmlSerializer()
+    converted_xml = xml_serializer.render(obj=xml_doc, ns_map={})
+    return converted_xml
