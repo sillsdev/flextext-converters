@@ -16,9 +16,12 @@
             Add toolbox parsing method
         3-5-24:
             Reformat the toolbox parsing method
+        3-7-24:
+            Reformat the toolbox parsing method to lists
 
 """
 
+from typing import List
 
 def toolbox_file_reader(filename):
     with open(filename, "r") as f:
@@ -28,11 +31,23 @@ def toolbox_file_reader(filename):
 
 
 def toolbox_data_parser(toolbox_data):
-    m_dict = {}  # marker dictionary
-    lines = toolbox_data.split("\n")  # list of each line in the toolbox_data
-    for line in lines:
-        marker, sep, m_data = line.partition(" ")  # get marker and marker data
-        m_dict[marker] = m_data  # add item to dictionary
 
-    del m_dict[""]  # dictionary has an extra item, this line deletes it
-    return m_dict
+    paragraphs = toolbox_data.split(
+        "\n\n"
+    )  # list of all the paragraphs in toolbox_data
+    final_list = []
+
+    for paragraph in paragraphs:
+        lines = paragraph.split("\n")  # list of each line in the paragraph
+        paragraph_list: List[List[str]] = []
+        for line in lines:
+            if "\\" != line[0]:  # if line is part of the marker above
+                words = line.split()
+                paragraph_list[len(paragraph_list) - 1].extend(words)
+            else:
+                words = line.split()  # list of the words in the line
+                paragraph_list.append(words)  # add list of words to paragraph list
+        final_list.append(paragraph_list)  # add list of paragraphs to final list
+
+    return final_list
+
