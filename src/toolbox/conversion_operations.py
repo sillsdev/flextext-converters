@@ -1,3 +1,4 @@
+import unicodedata
 import xml.dom.minidom
 from typing import List
 
@@ -91,7 +92,11 @@ def convert(toolbox_data, markers):
                         xml_word.guid = generate_uuid(None)
 
                         word_item = Item()
-                        word_item.type_value = "txt"
+                        word_item.type_value = (
+                            "txt"
+                            if len(word) > 1 or unicodedata.category(word)[0] != "P"
+                            else "punct"
+                        )
                         word_item.lang = language
                         word_item.value = word
                         xml_word.item.append(word_item)
@@ -128,7 +133,7 @@ def convert(toolbox_data, markers):
                     ] = []
                     if xml_phrase.words is not None:
                         xml_word_list = xml_phrase.words.word
-                    for i in range(len(xml_word_list)):
+                    for i in range(min(len(xml_word_list), len(text))):
                         xml_word = xml_word_list[i]
                         txt_item = xml_word.item[0]
                         gloss_word = text[i]
