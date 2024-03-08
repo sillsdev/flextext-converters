@@ -5,6 +5,7 @@ from json_operations import load_map_from_json, save_map_to_json
 from marker_operations import define_markers, read_markers
 from output_operations import output_flextext
 from toolbox_operations import toolbox_data_parser, toolbox_file_reader
+from file_picker_operations import file_picker
 
 
 # method to turn a marker filename into a json marker filename
@@ -23,25 +24,21 @@ def main():
     )
 
     if answer.upper() == "Y":
-        json_marker_filename = (
-            f"json_marker_files/"
-            f"{input('Input name of defined JSON marker file (in json_marker_files folder): ')}"
-        )
+        print('Select a defined JSON marker file')
+        json_marker_filename = file_picker()
 
-        while not os.path.isfile(
-            json_marker_filename
-        ) or not json_marker_filename.endswith(".json"):
-            json_marker_filename = input(
-                f"json_marker_files/"
-                f"{'Error; invalid file. Input name of defined JSON marker file: '}"
-            )
+        while json_marker_filename == "" or not json_marker_filename.endswith(".json"):
+            print('Error; invalid file. Select a defined JSON marker file')
+            json_marker_filename = file_picker()
     else:
-        marker_filename = f"marker_files/{input('Input name of marker file (in marker_files folder): ')}"
+        print('Select a marker file')
+        marker_filename = file_picker()
 
-        while not os.path.isfile(marker_filename) or not marker_filename.endswith(
+        while marker_filename == "" or not marker_filename.endswith(
             ".typ"
         ):
-            marker_filename = f"marker_files/{input('Error; invalid file. Input name of marker file: ')}"
+            print('Error; invalid file. Select a marker file')
+            marker_filename = file_picker()
 
         # get raw markers
         raw_markers = read_markers(marker_filename)
@@ -57,11 +54,11 @@ def main():
     json_markers = load_map_from_json(json_marker_filename)
 
     # toolbox filename
-    toolbox_filename = f"toolbox_files/{input('Input name of Toolbox file to convert (in toolbox_files folder): ')}"
-    while not os.path.isfile(toolbox_filename):
-        toolbox_filename = input(
-            "Error; invalid file. Input name of Toolbox file to convert: "
-        )
+    print('Select a Toolbox file to convert')
+    toolbox_filename = file_picker()
+    while toolbox_filename == "":
+        print('Error; invalid file. Select a Toolbox file to convert')
+        toolbox_filename = file_picker()
 
     # fieldworks filename
     fieldworks_filename = f"fieldworks_files/{input('Input name of FieldWorks file to create (to fieldworks_files folder): ')}"

@@ -6,4 +6,5 @@ from tkinter import filedialog
 def file_picker():
     root = tk.Tk()
     root.withdraw()  # Hide the main window
+    root.wm_attributes('-topmost', 1)
     return filedialog.askopenfilename()  # Open the file dialog
