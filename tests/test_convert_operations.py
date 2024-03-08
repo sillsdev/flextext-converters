@@ -1,14 +1,13 @@
-# from toolbox.conversion_operations import
+from xsdata.formats.dataclass.serializers import XmlSerializer
+
+from src.toolbox.flextext_models import Document
 
 
-# def test_init():
-#     assert function() is True
-#
-#
-# def test_init2():
-#     assert function2() is False
-#
-#
-# def test_init3():
-#     with pytest.raises(ValueError):
-#         throw_function()
+def test_serializing():
+    doc = Document()
+
+    xml_serializer = XmlSerializer()
+    xml = xml_serializer.render(obj=doc, ns_map={})
+
+    print(xml)
+    assert xml is not None
