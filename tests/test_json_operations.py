@@ -23,18 +23,21 @@ sub_test_map2 = {
 test_map2 = {"\\ref": sub_test_map2}
 
 
+# Test that the file is actually created
 def test_json_creation():
     output_path = "./tests/output_test_files/test_json_creation.json"
     save_map_to_json(test_map1, output_path)
     assert os.path.isfile(output_path) is True
 
 
+# Test creating a .json from a simple map
 def test_json_contents_simple():
     output_path = "./tests/output_test_files/test_json_contents_simple.json"
     save_map_to_json(test_map1, output_path)
     assert (test_map1 == load_map_from_json(output_path)) is True
 
 
+# Test creating a .json from a more complex map
 def test_json_contents_complex():
     output_path = "./tests/output_test_files/test_json_contents_complex.json"
     save_map_to_json(test_map2, output_path)
