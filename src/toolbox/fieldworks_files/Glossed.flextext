@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<document version="2">
+	<interlinear-text guid="98828d37-f2d5-4e56-8725-8eab1c13cdf5">
+		<item type="title" lang="en">Glossed</item>
+		<paragraphs>
+			<paragraph guid="e8b9eff0-6fa1-4460-b32e-9d787a5a1be1">
+				<phrases>
+					<phrase guid="6bb2903b-bbc1-430f-b763-274d8280b51a">
+						<item type="txt" lang="ext">This text is glossed.</item>
+						<item type="gls" lang="en">this text is glossed</item>
+						<words>
+							<word guid="5aa80851-b252-4d3b-bd46-9506a9c52000" type="phrase">
+								<item type="txt" lang="ext">This</item>
+								<item type="gls" lang="en">this</item>
+								<morphemes>
+									<morph>
+										<item type="txt" lang="ext">This</item>
+										<item type="gls" lang="en">this</item>
+									</morph>
+								</morphemes>
+							</word>
+							<word guid="7aacc823-96e5-44d3-a5a4-a587742ef4f2" type="phrase">
+								<item type="txt" lang="ext">text</item>
+								<item type="gls" lang="en">text</item>
+								<morphemes>
+									<morph>
+										<item type="txt" lang="ext">text</item>
+										<item type="gls" lang="en">text</item>
+									</morph>
+								</morphemes>
+							</word>
+							<word guid="1b748347-d677-4da6-9382-f410975a9471" type="phrase">
+								<item type="txt" lang="ext">is</item>
+								<item type="gls" lang="en">is</item>
+								<morphemes>
+									<morph>
+										<item type="txt" lang="ext">is</item>
+										<item type="gls" lang="en">is</item>
+									</morph>
+								</morphemes>
+							</word>
+							<word guid="68af8e0b-fff7-4dd2-bb13-aef672092494" type="phrase">
+								<item type="txt" lang="ext">glossed.</item>
+								<item type="gls" lang="en">glossed</item>
+								<morphemes>
+									<morph>
+										<item type="txt" lang="ext">glossed.</item>
+										<item type="gls" lang="en">glossed</item>
+									</morph>
+								</morphemes>
+							</word>
+						</words>
+					</phrase>
+					<phrase guid="ee47036b-b49a-4b79-aacc-5d0aa5c4fc12"/>
+				</phrases>
+			</paragraph>
+		</paragraphs>
+	</interlinear-text>
+</document>
