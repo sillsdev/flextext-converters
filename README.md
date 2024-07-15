@@ -7,7 +7,8 @@ Converters to and from flextext interlinear format
 `flextext-converters/src/toolbox`
 
 * Must have python version >= 3.12.2 installed</li>
-* Install requirements with `pip install -r requirements.txt`
+* Install requirements with `pip install -r requirements.txt --user`
+* Install tox `python -m pip install --user tox`
 * Run tests and linting: `python -m tox`
 * Run the converter: `python src/toolbox/main.py` and follow instructions
 * Notes
