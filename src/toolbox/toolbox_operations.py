@@ -29,7 +29,7 @@ from typing import List
 
 
 def toolbox_file_reader(filename):  # read in toolbox file
-    with open(filename, "r") as f:
+    with open(filename, "r", encoding="iso8859_5") as f:
         toolbox_data = f.read()
 
     return toolbox_data

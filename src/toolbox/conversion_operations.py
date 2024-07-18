@@ -4,8 +4,8 @@ from typing import List
 
 from xsdata.formats.dataclass.serializers import XmlSerializer
 
-from toolbox.flextext_models import Document, Item
-from toolbox.uuid_generation import generate_uuid
+from src.toolbox.flextext_models import Document, Item
+from src.toolbox.uuid_generation import generate_uuid
 
 
 def make_title(xml_it, title_lang, title_value):

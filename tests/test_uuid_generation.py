@@ -2,7 +2,7 @@ import uuid
 
 import pytest
 
-from toolbox.uuid_generation import generate_uuid
+from src.toolbox.uuid_generation import generate_uuid
 
 
 # Helper method to test if a UUID is valid
