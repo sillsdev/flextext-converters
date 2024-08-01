@@ -35,11 +35,25 @@ def toolbox_file_reader(filename):  # read in toolbox file
     return toolbox_data
 
 
-def toolbox_data_parser(toolbox_data):
+def toolbox_mapping(toolbox_data):
+    map1 = {}
+    lines = toolbox_data.split("\n")
+    for line in lines:
+        if line == "":
+            continue
+        if "\\" == line[0]:
+            mkr = line.split()[0]
+            if mkr in map1.keys():
+                map1[mkr]["Count"] = map1[mkr]["Count"] + 1
+            else:
+                map1[mkr] = {}
+                map1[mkr]["Count"] = 1
+    return map1
 
-    paragraphs = toolbox_data.split(
-        "\n\n"
-    )  # list of all the paragraphs in toolbox_data
+
+def toolbox_data_parser(toolbox_data):
+    # list of all the paragraphs in toolbox_data
+    paragraphs = toolbox_data.split("\n\n")
     final_list = []
 
     for paragraph in paragraphs:

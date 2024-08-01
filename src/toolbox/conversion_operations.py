@@ -63,7 +63,8 @@ def convert(toolbox_data, markers):
                 continue
 
             marker = markers[start_code]
-            text_type = int(marker["text_type"])
+            # text_type = int(marker["text_type"])
+            text_type = marker["\\nam"]
             language = marker["\\lng"]
             text = line[1:]
 
@@ -73,8 +74,8 @@ def convert(toolbox_data, markers):
                 continue
 
             match text_type:
-                # word
-                case 1:
+                # 1: word
+                case "Text":
                     # item
                     phrase_item = Item()
                     phrase_item.type_value = "txt"
@@ -102,24 +103,24 @@ def convert(toolbox_data, markers):
                         xml_word.item.append(word_item)
                         xml_words.word.append(xml_word)
 
-                # morphemes
-                case 2:
+                # 2: morphemes
+                case "morphemes":
                     pass
 
-                # lex. entries
-                case 3:
+                # 3 lex. entries
+                case "lex. entries":
                     pass
 
-                # lex. gloss
-                case 4:
+                # 4 lex. gloss
+                case "lex. gloss":
                     pass
 
-                # lex. gram info
-                case 5:
+                # 5 lex. gram info
+                case "lex. gram info":
                     pass
 
-                # word gloss
-                case 6:
+                # 6 word gloss
+                case "word gloss":
                     # item
                     phrase_item = Item()
                     phrase_item.type_value = "gls"
@@ -163,12 +164,12 @@ def convert(toolbox_data, markers):
                         xml_morphemes.morph.append(xml_morph)
                         xml_word.morphemes.append(xml_morphemes)
 
-                # word cat
-                case 7:
+                # 7 word cat
+                case "word cat":
                     pass
 
-                # free translation
-                case 8:
+                # 8 free translation
+                case "free translation":
                     # item
                     phrase_item = Item()
                     phrase_item.type_value = "gls"
@@ -176,16 +177,16 @@ def convert(toolbox_data, markers):
                     phrase_item.value = text
                     xml_phrase.item.append(phrase_item)
 
-                # literal translation
-                case 9:
+                # 9 literal translation
+                case "literal translation":
                     phrase_item = Item()
                     phrase_item.type_value = "lit"
                     phrase_item.lang = language
                     phrase_item.value = text
                     xml_phrase.item.append(phrase_item)
 
-                # note
-                case 10:
+                # 10 note
+                case "note":
                     phrase_item = Item()
                     phrase_item.type_value = "note"
                     phrase_item.lang = language

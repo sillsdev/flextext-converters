@@ -1,3 +1,6 @@
+from popup_operations import *
+
+
 def marker_file_reader(filename):
     with open(filename, "r") as f:
         marker_data = f.read()
@@ -60,30 +63,22 @@ def read_markers(inputfile):
     return map1
 
 
+def compare_maps(map1, map2):
+    for key in map1.keys():
+        if key in map2:
+            map1[key].update(map2[key])
+    return map1
+
+
 def define_markers(given_map):
-    # Iterates through the marker keys of the given map
-    for key in given_map.keys():
-        answer = input(
-            "For the marker with code <"
-            + key
-            + ">, and language <"
-            + given_map[key]["\\lng"]
-            + ">, enter a number corresponding to type.\n 1: Word | 2: Morphemes | 3: Lex. Entries | "
-            "4: Lex. Gloss | 5: Lex. Gram. Info. | 6: Word Gloss | 7: Word Cat. | 8: Free Translation | "
-            "9: Literal Translation | 10: Note\n"
-        )
-        # Adds the given type as a key/value combo into the map
-        while not answer.isnumeric() or int(answer) < 1 or int(answer) > 10:
-            answer = input(
-                "Error: For the marker with code <"
-                + key
-                + ">, and language <"
-                + given_map[key]["lng"]
-                + ">, enter a number corresponding to type.\n 1: Word | 2: Morphemes | 3: Lex. Entries | "
-                "4: Lex. Gloss | 5: Lex. Gram. Info. | 6: Word Gloss | 7: Word Cat. | 8: Free Translation | "
-                "9: Literal Translation | 10: Note\n"
-            )
-        given_map[key]["text_type"] = int(answer)
+    # Not used for now but might need  later
+    type_list = ["Word", "Morphemes", "Lex. Entries", "Lex. Gloss",
+                 "Lex. Gram. Info", "Word Gloss", "Word Cat.",
+                 "Free Translation", "Literal Translation", "Note"]
+    key_list = ["W", "M", "E", "L", "I", "G", "C", "F", "T", "N"]
+
+    # field_mapping = table("Field Mapping Interface", given_map,
+    #                       ["Marker", "Count", "Name", "Language"])
     return given_map
 
 
