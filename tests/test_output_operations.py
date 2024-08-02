@@ -2,9 +2,11 @@ import os
 import stat
 
 import pytest
-import tox
 
-from src.toolbox.output_operations import output_flextext
+from toolbox.output_operations import output_flextext
+
+# import tox
+
 
 simple_sample_string = """This is a simple list of strings
 These strings are in simple in nature
@@ -61,19 +63,21 @@ complex_sample_string = """<?xml version="1.0" encoding="utf-8"?>
 
 # Tests that files are created
 def test_file_creation():
-    # output_path = "./tests/output_test_files/test_file_creation.flextext"
     output_path = "./output_test_files/test_file_creation.flextext"
+    if "TOX_ENV_NAME" in os.environ:
+        output_path = "./tests" + output_path[1:]
     output_flextext(output_path, simple_sample_string)
     assert os.path.isfile(output_path) is True
 
 
 # Test that output in file matches input with a simple string list
 def test_file_contents_simple():
-    # out_path = "./tests/output_test_files/test_file_contents_simple.flextext"
-    out_path = "./output_test_files/test_file_contents_simple.flextext"
-    output_flextext(out_path, simple_sample_string)
+    output_path = "./output_test_files/test_file_contents_simple.flextext"
+    if "TOX_ENV_NAME" in os.environ:
+        output_path = "./tests" + output_path[1:]
+    output_flextext(output_path, simple_sample_string)
 
-    with open(out_path, "r") as file:
+    with open(output_path, "r") as file:
         file_contents = file.read()
 
     assert (file_contents == simple_sample_string) is True
@@ -81,11 +85,12 @@ def test_file_contents_simple():
 
 # Test that output in file matches input with a complex & realistic string list
 def test_file_contents_complex():
-    # out_path = "./tests/output_test_files/test_file_contents_complex.flextext"
-    out_path = "./output_test_files/test_file_contents_complex.flextext"
-    output_flextext(out_path, complex_sample_string)
+    output_path = "./output_test_files/test_file_contents_complex.flextext"
+    if "TOX_ENV_NAME" in os.environ:
+        output_path = "./tests" + output_path[1:]
+    output_flextext(output_path, complex_sample_string)
 
-    with open(out_path, "r") as file:
+    with open(output_path, "r") as file:
         file_contents = file.read()
 
     assert (file_contents == complex_sample_string) is True
@@ -93,25 +98,28 @@ def test_file_contents_complex():
 
 # Test that an exception is thrown when an invalid path is provided
 def test_invalid_file_path():
+    output_path = "./fake_folder/fake_file.flextext"
+    if "TOX_ENV_NAME" in os.environ:
+        output_path = "./tests" + output_path[1:]
     with pytest.raises(FileNotFoundError):
-        # output_flextext("./tests/fake_folder/fake_file.flextext", simple_sample_string)
-        output_flextext("./fake_folder/fake_file.flextext", simple_sample_string)
+        output_flextext(output_path, simple_sample_string)
 
 
 # Test that an exception is thrown when the file is un-writeable
 def test_no_write_perms():
     # Create the file first
-    # out_path = "./tests/output_test_files/test_no_write_perms.flextext"
-    out_path = "./output_test_files/test_no_write_perms.flextext"
-    with open(out_path, "w") as f:
+    output_path = "./output_test_files/test_no_write_perms.flextext"
+    if "TOX_ENV_NAME" in os.environ:
+        output_path = "./tests" + output_path[1:]
+    with open(output_path, "w") as f:
         f.write("This file shouldn't have been modified.")
 
     # Change its permissions to be read-only
-    os.chmod(out_path, stat.S_IREAD)
+    os.chmod(output_path, stat.S_IREAD)
 
     # Now run the function that should raise a PermissionError
     with pytest.raises(PermissionError):
-        output_flextext(out_path, simple_sample_string)
+        output_flextext(output_path, simple_sample_string)
 
     # Change its permissions to allow writing so future tests don't fail
-    os.chmod(out_path, stat.S_IWRITE)
+    os.chmod(output_path, stat.S_IWRITE)

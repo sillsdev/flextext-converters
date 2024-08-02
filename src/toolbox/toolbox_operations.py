@@ -25,7 +25,7 @@
 """
 
 import unicodedata
-from typing import List
+from typing import Any, Dict, List
 
 
 def toolbox_file_reader(filename):  # read in toolbox file
@@ -36,7 +36,7 @@ def toolbox_file_reader(filename):  # read in toolbox file
 
 
 def toolbox_mapping(toolbox_data):
-    map1 = {}
+    map1: Dict[str, Dict[str, Any]] = {}
     lines = toolbox_data.split("\n")
     for line in lines:
         if line == "":
@@ -47,6 +47,8 @@ def toolbox_mapping(toolbox_data):
                 map1[mkr]["Count"] = map1[mkr]["Count"] + 1
             else:
                 map1[mkr] = {}
+                map1[mkr]["\\lng"] = ""
+                map1[mkr]["\\nam"] = ""
                 map1[mkr]["Count"] = 1
     return map1
 

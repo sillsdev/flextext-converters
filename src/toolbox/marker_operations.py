@@ -1,6 +1,3 @@
-from popup_operations import *
-
-
 def marker_file_reader(filename):
     with open(filename, "r") as f:
         marker_data = f.read()
@@ -70,16 +67,25 @@ def compare_maps(map1, map2):
     return map1
 
 
-def define_markers(given_map):
-    # Not used for now but might need  later
-    type_list = ["Word", "Morphemes", "Lex. Entries", "Lex. Gloss",
-                 "Lex. Gram. Info", "Word Gloss", "Word Cat.",
-                 "Free Translation", "Literal Translation", "Note"]
+# Not used for now but might need  later
+"""def define_markers(given_map):
+    type_list = [
+        "Word",
+        "Morphemes",
+        "Lex. Entries",
+        "Lex. Gloss",
+        "Lex. Gram. Info",
+        "Word Gloss",
+        "Word Cat.",
+        "Free Translation",
+        "Literal Translation",
+        "Note",
+    ]
     key_list = ["W", "M", "E", "L", "I", "G", "C", "F", "T", "N"]
 
     # field_mapping = table("Field Mapping Interface", given_map,
     #                       ["Marker", "Count", "Name", "Language"])
-    return given_map
+    return given_map"""
 
 
 # This code is an attempt at implementing mkrset functionality - currently nonfunctional

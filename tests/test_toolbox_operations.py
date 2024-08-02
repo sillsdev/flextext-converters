@@ -9,9 +9,10 @@
         testing file for toolbox operations
 """
 
+import os
 from unittest import TestCase
 
-from src.toolbox.toolbox_operations import toolbox_data_parser, toolbox_file_reader
+from toolbox.toolbox_operations import toolbox_data_parser, toolbox_file_reader
 
 
 def test_toolbox_file_reader():
@@ -20,8 +21,10 @@ def test_toolbox_file_reader():
         "\\tx This has a translation.\n"
         "\\ft It is a freeform translation.\n\\nt"
     )
-    # file = "tests/example_test_files/toolbox_test.sfm"
+
     file = "example_test_files/toolbox_test.sfm"
+    if "TOX_ENV_NAME" in os.environ:
+        file = "tests/" + file
     assert toolbox_file_reader(file) == toolbox_test_data
 
 
@@ -31,8 +34,9 @@ def test_toolbox_file_reader1():
         "\\tx This is some test data\n\\ge this is some test data\n"
         "\n\\ft\n\\nt"
     )
-    # file = "tests/example_test_files/toolbox_test1.sfm"
     file = "example_test_files/toolbox_test1.sfm"
+    if "TOX_ENV_NAME" in os.environ:
+        file = "tests/" + file
     assert toolbox_file_reader(file) == toolbox_test_data
 
 
@@ -47,8 +51,9 @@ def test_toolbox_file_reader2():
         "\\mg nice, what about the other things\n"
         "\n\\nt"
     )
-    # file = "tests/example_test_files/toolbox_test2.sfm"
     file = "example_test_files/toolbox_test2.sfm"
+    if "TOX_ENV_NAME" in os.environ:
+        file = "tests/" + file
     assert toolbox_file_reader(file) == toolbox_test_data
 
 

@@ -4,8 +4,8 @@ from typing import List
 
 from xsdata.formats.dataclass.serializers import XmlSerializer
 
-from src.toolbox.flextext_models import Document, Item
-from src.toolbox.uuid_generation import generate_uuid
+from toolbox.flextext_models import Document, Item
+from toolbox.uuid_generation import generate_uuid
 
 
 def make_title(xml_it, title_lang, title_value):
@@ -75,7 +75,7 @@ def convert(toolbox_data, markers):
 
             match text_type:
                 # 1: word
-                case "Text":
+                case "Word":
                     # item
                     phrase_item = Item()
                     phrase_item.type_value = "txt"
@@ -104,23 +104,23 @@ def convert(toolbox_data, markers):
                         xml_words.word.append(xml_word)
 
                 # 2: morphemes
-                case "morphemes":
+                case "Morphemes":
                     pass
 
                 # 3 lex. entries
-                case "lex. entries":
+                case "Lex. Entries":
                     pass
 
                 # 4 lex. gloss
-                case "lex. gloss":
+                case "Lex. Gloss":
                     pass
 
                 # 5 lex. gram info
-                case "lex. gram info":
+                case "Lex. Gram Info":
                     pass
 
                 # 6 word gloss
-                case "word gloss":
+                case "Word Gloss":
                     # item
                     phrase_item = Item()
                     phrase_item.type_value = "gls"
@@ -165,11 +165,11 @@ def convert(toolbox_data, markers):
                         xml_word.morphemes.append(xml_morphemes)
 
                 # 7 word cat
-                case "word cat":
+                case "Word Cat.":
                     pass
 
                 # 8 free translation
-                case "free translation":
+                case "Free Translation":
                     # item
                     phrase_item = Item()
                     phrase_item.type_value = "gls"
@@ -178,7 +178,7 @@ def convert(toolbox_data, markers):
                     xml_phrase.item.append(phrase_item)
 
                 # 9 literal translation
-                case "literal translation":
+                case "Literal Translation":
                     phrase_item = Item()
                     phrase_item.type_value = "lit"
                     phrase_item.lang = language
@@ -186,7 +186,7 @@ def convert(toolbox_data, markers):
                     xml_phrase.item.append(phrase_item)
 
                 # 10 note
-                case "note":
+                case "Note":
                     phrase_item = Item()
                     phrase_item.type_value = "note"
                     phrase_item.lang = language

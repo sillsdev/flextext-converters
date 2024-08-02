@@ -1,7 +1,7 @@
 from xsdata.formats.dataclass.serializers import XmlSerializer
 
-from src.toolbox.flextext_models import Document, Item
-from src.toolbox.uuid_generation import generate_uuid
+from toolbox.flextext_models import Document, Item
+from toolbox.uuid_generation import generate_uuid
 
 
 def test_serializing():
