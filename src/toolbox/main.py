@@ -1,10 +1,9 @@
-from tkinter import filedialog
-
 from conversion_operations import convert
+from file_picker_operations import save_file
 from json_operations import load_map_from_json, save_map_to_json
 from marker_operations import compare_maps, read_markers
 from output_operations import output_flextext
-from popup_operations import closed_resp, open_resp, table
+from popup_operations import select_file_window, table
 from toolbox_operations import toolbox_data_parser, toolbox_file_reader, toolbox_mapping
 
 
@@ -16,69 +15,46 @@ def make_json_filename(marker_filename):
 
 
 def main():
-    button_list = ["Browse for Marker File", "Browse for JSON File"]
-    key_list = ["M", "J"]
+    # Get the name of the marker/json (if one is selected) and toolbox file
+    marker_filename, toolbox_filename = select_file_window()
 
-    response = closed_resp(
-        "Browse for a Marker File or a previously defined" " JSON File:",
-        button_list,
-        key_list,
-    )
-
-    # Check the user's response
-    if response == button_list[1]:
-        filetypes = [("JSON files", "*.json")]
-
-        # Open file picker dialog and allow only .json files
-        json_marker_filename = filedialog.askopenfilename(
-            title="Select a JSON File", filetypes=filetypes
-        )
-        if not json_marker_filename:
-            quit()
-
-    else:
-        filetypes = [("Marker files", "*.typ")]
-        marker_filename = filedialog.askopenfilename(
-            title="Select a Marker File", filetypes=filetypes
-        )
-        if not marker_filename:
-            quit()
-
-        # get raw markers
-        raw_markers = read_markers(marker_filename)
-
-        # output json markers
-        json_marker_filename = make_json_filename(marker_filename)
-        save_map_to_json(raw_markers, json_marker_filename)
-
-    # toolbox files
-    filetypes = [("Text files", "*.txt"), ("Toolbox files", "*.sfm")]
-
-    toolbox_filename = filedialog.askopenfilename(
-        title="Select a Toolbox File:", filetypes=filetypes
-    )
-    if not toolbox_filename:
-        quit()
-
-    heading_list = ["Marker", "Count", "Name", "Language"]
-
+    # Create a dictionary holding data like name and language
     toolbox_map = toolbox_mapping(toolbox_file_reader(toolbox_filename))
 
-    # read in json markers
-    json_map = load_map_from_json(json_marker_filename)
+    # Check if a marker file was selected
+    if marker_filename:
+        if marker_filename.endswith(".json"):
+            json_marker_filename = marker_filename
 
-    markers = compare_maps(toolbox_map, json_map)
+        else:
+            # Convert to a JSON file
+            raw_markers = read_markers(marker_filename)
 
-    updated_markers = table(
-        "Double Click the name or language box of a marker to " "edit it",
-        markers,
-        heading_list,
+            # output json markers
+            json_marker_filename = make_json_filename(marker_filename)
+            save_map_to_json(raw_markers, json_marker_filename)
+
+        # Create JSON dictionary with data
+        json_map = load_map_from_json(json_marker_filename)
+
+        # Compare and combine the two dictionaries
+        markers = compare_maps(toolbox_map, json_map)
+    else:
+        markers = toolbox_map
+
+    heading = "Double Click the name or language box of a marker to edit it"
+    heading_list = ["Marker", "Count", "Name", "Language"]
+
+    # Create the UI table where the user can update the marker information
+    updated_markers = table(heading, markers, heading_list)
+
+    flextext_filename = save_file(
+        "Input Name of Flextext File to Create", "fieldworks_files"
     )
-
-    usr_input = open_resp(
-        "Input name of FieldWorks File to create\n" "(to fieldworks_files Folder)"
-    )
-    fieldworks_filename = f"fieldworks_files/{usr_input}"
+    if not flextext_filename:
+        quit()
+    if not flextext_filename.endswith(".flextext"):
+        flextext_filename += ".flextext"
 
     # get toolbox data
     toolbox_data = toolbox_data_parser(toolbox_file_reader(toolbox_filename))
@@ -87,7 +63,7 @@ def main():
     converted_xml = convert(toolbox_data, updated_markers)
 
     # output the converted data
-    output_flextext(fieldworks_filename, converted_xml)
+    output_flextext(flextext_filename, converted_xml)
 
 
 if __name__ == "__main__":

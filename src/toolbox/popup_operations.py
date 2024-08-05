@@ -1,7 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
+from typing import List
 
 import pycountry
+from file_picker_operations import select_file
 
 
 def closed_resp(question, button_list, key_list):
@@ -49,11 +51,10 @@ def open_resp(question):
     user_input.focus_set()
 
     def on_submit():
-        button.event_generate("<Button-1>")
-        response.set(user_input.get())
-        if user_input.get() == "":
-            response.set("default")
-        root.after(100, root.destroy)
+        if user_input.get():
+            button.event_generate("<Button-1>")
+            response.set(user_input.get())
+            root.after(100, root.destroy)
 
     # Make submit button
     button = ttk.Button(root, text="Submit", command=on_submit)
@@ -181,11 +182,71 @@ def table(question, mkr_map, headings):
     scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
     tree.pack(expand=True, fill=tk.BOTH)
-
     root_geometry(window)
     window.protocol("WM_DELETE_WINDOW", on_close)
     window.mainloop()
     return mkr_map
+
+
+# Returns a tuple with the form: marker_filename, toolbox_filename
+def select_file_window():
+    root = tk.Tk()
+    root.title("<<< Toolbox to FlexText File Converter >>>")
+
+    # Question or command
+    label = tk.Label(root, text="Select a Marker file and Toolbox file")
+    label.grid(row=0, column=1, padx=10, pady=10)
+
+    mkr_label = tk.Label(root, text="Marker or JSON file: ")
+    mkr_label.grid(row=1, column=0, padx=10, pady=10)
+    mkr_response = tk.StringVar()
+    marker_input = ttk.Entry(
+        root, width=30, textvariable=mkr_response, state="readonly"
+    )
+    marker_input.grid(row=1, column=1, pady=10)
+
+    tlbx_label = tk.Label(root, text="Toolbox file: ")
+    tlbx_label.grid(row=2, column=0, padx=10, pady=10)
+    tlbx_response = tk.StringVar()
+    tlbx_input = ttk.Entry(root, width=30, textvariable=tlbx_response, state="readonly")
+    tlbx_input.grid(row=2, column=1, pady=10)
+
+    def browse_marker():
+        filetypes = [("Marker files", "*.typ"), ("JSON files", "*.json")]
+        file = select_file("Select a Marker or JSON File", filetypes)
+        if file:
+            mkr_response.set(file)
+        root.focus_set()
+
+    def browse_toolbox():
+        filetypes = [("Text files", "*.txt"), ("Toolbox files", "*.sfm")]
+        file = select_file("Select a ToolBox or Text File", filetypes)
+        if file:
+            tlbx_response.set(file)
+            please.grid_remove()
+            submit.grid(row=3, column=1, pady=10)
+        root.focus_set()
+
+    def on_submit():
+        if tlbx_response.get():
+            submit.event_generate("<Button-1>")
+            root.after(100, root.destroy)
+
+    mkr_button = ttk.Button(text="Browse", command=browse_marker)
+    mkr_button.grid(row=1, column=2, pady=10)
+
+    tlbx_button = ttk.Button(text="Browse", command=browse_toolbox)
+    tlbx_button.grid(row=2, column=2, pady=10)
+
+    please = ttk.Label(text="Please select files", foreground="red")
+    please.grid(row=3, column=1, pady=10)
+    submit = ttk.Button(text="Submit", command=on_submit)
+    root.bind("<Return>", lambda enter: on_submit())
+
+    root.protocol("WM_DELETE_WINDOW", on_close)
+    root_geometry(root)
+    root.mainloop()
+    return mkr_response.get(), tlbx_response.get()
 
 
 def on_close():
@@ -194,7 +255,7 @@ def on_close():
 
 def root_init(question):
     root = tk.Tk()
-    root.title("<<< Toolbox to FieldWorks File Converter >>>")
+    root.title("<<< Toolbox to FlexText File Converter >>>")
 
     # Question or command
     question_label = tk.Label(root, text=question)
@@ -223,17 +284,18 @@ def root_geometry(root):
     root.geometry(f"{width + 20}x{height + 20}+{x_offset}+{y_offset}")
 
 
+# Organizes an alphabetical language list starting with 2-letter codes
 def language_list():
-    lang_list = ["English: eng"]
+    lang_list: List[str] = []
+    a2_idx = 0
     for lang in pycountry.languages:
-        # if hasattr(lang, 'alpha_2'):
-        #     lang_list.append(lang.alpha_2 + " ( " + lang.name + ")")
-        if hasattr(lang, "alpha_3") and lang.alpha_3 != "eng":
+        # 2-letter codes
+        if hasattr(lang, "alpha_2"):
+            lang_list.insert(a2_idx, lang.name + ": " + lang.alpha_2)
+            a2_idx += 1
+        # 3-letter codes
+        elif hasattr(lang, "alpha_3"):
             lang_list.append(lang.name + ": " + lang.alpha_3)
-        # if hasattr(lang, 'terminology'):
-        #     lang_list.append(lang.terminology + " ( " + lang.name + ")")
-        # if hasattr(lang, 'bibliographic'):
-        #     lang_list.append(lang.bibliographic + " ( " + lang.name + ")")
     return lang_list
 
 
