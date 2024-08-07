@@ -4,6 +4,7 @@ from typing import List
 
 import pycountry
 from file_picker_operations import select_file
+from langcodes import tag_is_valid
 
 
 def closed_resp(question, button_list, key_list):
@@ -36,7 +37,6 @@ def closed_resp(question, button_list, key_list):
         )
 
     root_geometry(root)
-    root.protocol("WM_DELETE_WINDOW", on_close)
     root.mainloop()
     return response.get()
 
@@ -62,7 +62,6 @@ def open_resp(question):
     root.bind("<Return>", lambda event: on_submit())
 
     root_geometry(root)
-    root.protocol("WM_DELETE_WINDOW", on_close)
     root.mainloop()
     return response.get()
 
@@ -75,51 +74,94 @@ def dropdown_resp(question, drop_menu):
     button.pack(side=tk.BOTTOM, padx=10, pady=10)
 
     # Create Dropdown
-
-    # Run the application
-    root.protocol("WM_DELETE_WINDOW", on_close)
     response = create_dropdown(root, drop_menu, button)
     return response
 
 
 def create_dropdown(root, drop_menu, button):
-    def on_input_change(*args):
-        input_txt = response.get()
-        if response.get() in drop_menu:
-            button["state"] = tk.NORMAL
-        else:
-            button["state"] = tk.DISABLED
-        # Filter the dropdown menu based on what has been typed
-        dropdown["values"] = [
-            option
-            for option in drop_menu
-            if any(
-                word.lower().startswith(input_txt.lower()) for word in option.split()
-            )
-            or option.lower().startswith(input_txt.lower())
-        ]
+    def on_down(*args):
+        reopen_dropdown(dropdown)
         dropdown.event_generate("<Down>")
-        dropdown.focus_set()
 
     def on_submit(*args):
-        if button["state"] == tk.NORMAL:
-            button.config(fg="blue")
+        if colored_box.cget("bg") == "green":
+            button.event_generate("<Button-1>")
             root.after(100, root.destroy())
         else:
-            dropdown.event_generate("<Escape>")
-            dropdown.event_generate("<Down>")
+            reopen_dropdown(dropdown)
             dropdown.event_generate("<Return>")
 
-    button.config(command=on_submit)
     response = tk.StringVar()
-    dropdown = ttk.Combobox(root, textvariable=response, values=drop_menu)
-    dropdown.pack(padx=10, pady=10)
-    dropdown.focus_set()
-    response.trace("w", on_input_change)
+    middle_frame = tk.Frame(root)
+    middle_frame.pack(pady=10, padx=10, expand=True)
+    dropdown = ttk.Combobox(middle_frame, textvariable=response, values=drop_menu)
+    dropdown.pack(pady=10, side=tk.LEFT)
+    colored_box = tk.Frame(middle_frame, width=20, height=20, bg="red")
+    colored_box.pack(pady=10, padx=5, side=tk.LEFT)
+    if drop_menu == language_list():
+        response.trace(
+            "w", lambda *args: filter_languages(dropdown, response, colored_box)
+        )
+    else:
+        response.trace(
+            "w",
+            lambda *args: filter_dropdown(dropdown, drop_menu, response, colored_box),
+        )
+    button.config(command=on_submit)
+
+    def reset():
+        response.set("")
+        root.destroy()
+
     root.bind("<Return>", on_submit)
+    root.bind("<Down>", on_down)
     root_geometry(root)
+    dropdown.focus_set()
+    root.protocol("WM_DELETE_WINDOW", reset)
     root.wait_window(root)
     return dropdown, response.get()
+
+
+def filter_languages(dropdown, response, colored_box):
+    input_txt = response.get()
+    # Filters based on your response matching a word in one of the options
+    dropdown["values"] = [
+        option
+        for option in language_list()
+        if any(word.lower().startswith(input_txt.lower()) for word in option.split())
+        or option.lower().startswith(input_txt.lower())
+    ]
+    dropdown.event_generate("<Escape>")
+    if response.get() in dropdown["values"] or (
+        tag_is_valid(response.get()) and not dropdown["values"]
+    ):
+        colored_box.config(bg="green")
+    else:
+        colored_box.config(bg="red")
+    if dropdown["values"]:
+        dropdown.event_generate("<Button-1>")
+        dropdown.focus_set()
+
+
+def filter_dropdown(dropdown, drop_menu, response, colored_box):
+    input_txt = response.get()
+    # Filters based on if your response is found anywhere in one of the options
+    dropdown["values"] = [
+        option for option in drop_menu if input_txt.lower() in option.lower()
+    ]
+    if response.get() in dropdown["values"]:
+        colored_box.config(bg="green")
+    else:
+        colored_box.config(bg="red")
+    dropdown.event_generate("<Escape>")
+    if dropdown["values"]:
+        dropdown.event_generate("<Button-1>")
+        dropdown.focus_set()
+
+
+def reopen_dropdown(dropdown):
+    dropdown.event_generate("<Escape>")
+    dropdown.event_generate("<Button-1>")
 
 
 def table(question, mkr_map, headings):
@@ -129,19 +171,25 @@ def table(question, mkr_map, headings):
             return
         column_idx = int(column_id[1:]) - 1
         selected_item = tree.focus()
-        values = list(tree.item(selected_item, "values"))
+        row_vals = list(tree.item(selected_item, "values"))
         text = headings[column_idx]
-        edit_window = window_init(window, f"Edit {text} for marker {values[0]}", text)
+        drop_menu = type_list()
+        label = "Select an Option in the Dropdown Menu"
+        if text == "Language":
+            label = (
+                "Select a Language in the Dropdown Menu or Enter a Custom Language Tag"
+            )
+            drop_menu = language_list()
+        edit_window = window_init(
+            window, f"Edit {text} for marker {row_vals[0]}", label
+        )
 
-        save_btn = tk.Button(edit_window, text="Save")
-        save_btn.pack(side=tk.BOTTOM, padx=10, pady=10)
-        drop_menu = language_list()
-        if text == "Name":
-            drop_menu = type_list()
+        save_btn = ttk.Button(edit_window, text="Save")
+        save_btn.pack(pady=10, padx=10, side=tk.BOTTOM)
         dropdown, response = create_dropdown(edit_window, drop_menu, save_btn)
-        values[column_idx] = response
-        tree.item(selected_item, values=values)
-        mkr_map[values[0]][markers[column_idx - 1]] = values[column_idx]
+        row_vals[column_idx] = response
+        tree.item(selected_item, values=row_vals)
+        mkr_map[row_vals[0]][markers[column_idx - 1]] = row_vals[column_idx]
 
     def on_submit():
         button.event_generate("<Button-1>")
@@ -183,21 +231,15 @@ def table(question, mkr_map, headings):
 
     tree.pack(expand=True, fill=tk.BOTH)
     root_geometry(window)
-    window.protocol("WM_DELETE_WINDOW", on_close)
     window.mainloop()
     return mkr_map
 
 
 # Returns a tuple with the form: marker_filename, toolbox_filename
 def select_file_window():
-    root = tk.Tk()
-    root.title("<<< Toolbox to FlexText File Converter >>>")
+    root = root_init("Select a Marker file and Toolbox file", grid=True)
 
-    # Question or command
-    label = tk.Label(root, text="Select a Marker file and Toolbox file")
-    label.grid(row=0, column=1, padx=10, pady=10)
-
-    mkr_label = tk.Label(root, text="Marker or JSON file: ")
+    mkr_label = tk.Label(root, text="Marker or JSON File: ")
     mkr_label.grid(row=1, column=0, padx=10, pady=10)
     mkr_response = tk.StringVar()
     marker_input = ttk.Entry(
@@ -205,7 +247,7 @@ def select_file_window():
     )
     marker_input.grid(row=1, column=1, pady=10)
 
-    tlbx_label = tk.Label(root, text="Toolbox file: ")
+    tlbx_label = tk.Label(root, text="Toolbox File: ")
     tlbx_label.grid(row=2, column=0, padx=10, pady=10)
     tlbx_response = tk.StringVar()
     tlbx_input = ttk.Entry(root, width=30, textvariable=tlbx_response, state="readonly")
@@ -242,8 +284,6 @@ def select_file_window():
     please.grid(row=3, column=1, pady=10)
     submit = ttk.Button(text="Submit", command=on_submit)
     root.bind("<Return>", lambda enter: on_submit())
-
-    root.protocol("WM_DELETE_WINDOW", on_close)
     root_geometry(root)
     root.mainloop()
     return mkr_response.get(), tlbx_response.get()
@@ -253,14 +293,17 @@ def on_close():
     quit()
 
 
-def root_init(question):
+def root_init(question, grid=False):
     root = tk.Tk()
     root.title("<<< Toolbox to FlexText File Converter >>>")
+    root.protocol("WM_DELETE_WINDOW", on_close)
 
     # Question or command
     question_label = tk.Label(root, text=question)
-    question_label.pack(padx=10, pady=10)
-
+    if grid:
+        question_label.grid(padx=10, pady=10, row=0, column=1)
+    else:
+        question_label.pack(padx=10, pady=10)
     return root
 
 
@@ -268,8 +311,8 @@ def window_init(base_root, title, label):
     new_window = tk.Toplevel(base_root)
     new_window.title(title)
 
-    question_label = tk.Label(new_window, text=label)
-    question_label.pack(pady=10)
+    question_label = ttk.Label(new_window, text=label)
+    question_label.pack(pady=10, padx=10)
 
     return new_window
 
