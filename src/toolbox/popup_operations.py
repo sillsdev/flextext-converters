@@ -167,11 +167,12 @@ def reopen_dropdown(dropdown):
 def table(question, mkr_map, headings):
     def edit_cell(event):
         column_id = tree.identify_column(event.x)
-        if column_id == "#1" or column_id == "#2":
-            return
         column_idx = int(column_id[1:]) - 1
         selected_item = tree.focus()
         row_vals = list(tree.item(selected_item, "values"))
+        if column_id == "#1" or column_id == "#2" or not row_vals:
+            return
+        print(row_vals)
         text = headings[column_idx]
         drop_menu = type_list()
         label = "Select an Option in the Dropdown Menu"
