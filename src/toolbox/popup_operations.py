@@ -183,7 +183,8 @@ def table(question, mkr_map, headings):
         edit_window = window_init(
             window, f"Edit {text} for marker {row_vals[0]}", label
         )
-
+        # Force user to interact with edit window
+        edit_window.grab_set()
         save_btn = ttk.Button(edit_window, text="Save")
         save_btn.pack(pady=10, padx=10, side=tk.BOTTOM)
         dropdown, response = create_dropdown(edit_window, drop_menu, save_btn)
@@ -218,11 +219,9 @@ def table(question, mkr_map, headings):
     tree.tag_configure("color", background="#282828")
 
     # Add a submit button
-    button_frame = ttk.Frame(window)
-    button_frame.pack(fill="x", side="bottom")  # Pack it at the bottom
-    button = ttk.Button(button_frame, text="Submit", command=on_submit)
-    button.pack(pady=10)
-    window.bind("<Return>", lambda evt: on_submit())
+    button = ttk.Button(window, text="Submit", command=on_submit)
+    button.pack(pady=10, side="bottom")
+    window.bind("<Return>", lambda event: on_submit())
 
     # Add a scrollbar
     scrollbar = ttk.Scrollbar(window, orient=tk.VERTICAL, command=tree.yview)
@@ -237,28 +236,23 @@ def table(question, mkr_map, headings):
 
 # Returns a tuple with the form: marker_filename, toolbox_filename
 def select_file_window():
-    root = root_init("Select a Marker file and Toolbox file", grid=True)
+    root = root_init(
+        "Select a Toolbox File and\nOptionally Select a Marker File", grid=True
+    )
 
-    mkr_label = tk.Label(root, text="Marker or JSON File: ")
-    mkr_label.grid(row=1, column=0, padx=10, pady=10)
+    tlbx_label = tk.Label(root, text="Toolbox File *")
+    tlbx_label.grid(row=1, column=0, padx=10, pady=10)
+    tlbx_response = tk.StringVar()
+    tlbx_input = ttk.Entry(root, width=30, textvariable=tlbx_response, state="readonly")
+    tlbx_input.grid(row=1, column=1, pady=10)
+
+    mkr_label = tk.Label(root, text="Marker or JSON File")
+    mkr_label.grid(row=2, column=0, padx=10, pady=10)
     mkr_response = tk.StringVar()
     marker_input = ttk.Entry(
         root, width=30, textvariable=mkr_response, state="readonly"
     )
-    marker_input.grid(row=1, column=1, pady=10)
-
-    tlbx_label = tk.Label(root, text="Toolbox File: ")
-    tlbx_label.grid(row=2, column=0, padx=10, pady=10)
-    tlbx_response = tk.StringVar()
-    tlbx_input = ttk.Entry(root, width=30, textvariable=tlbx_response, state="readonly")
-    tlbx_input.grid(row=2, column=1, pady=10)
-
-    def browse_marker():
-        filetypes = [("Marker files", "*.typ"), ("JSON files", "*.json")]
-        file = select_file("Select a Marker or JSON File", filetypes)
-        if file:
-            mkr_response.set(file)
-        root.focus_set()
+    marker_input.grid(row=2, column=1, pady=10)
 
     def browse_toolbox():
         filetypes = [("Text files", "*.txt"), ("Toolbox files", "*.sfm")]
@@ -269,18 +263,25 @@ def select_file_window():
             submit.grid(row=3, column=1, pady=10)
         root.focus_set()
 
+    def browse_marker():
+        filetypes = [("Marker files", "*.typ"), ("JSON files", "*.json")]
+        file = select_file("Select a Marker or JSON File", filetypes)
+        if file:
+            mkr_response.set(file)
+        root.focus_set()
+
     def on_submit():
         if tlbx_response.get():
             submit.event_generate("<Button-1>")
             root.after(100, root.destroy)
 
-    mkr_button = ttk.Button(text="Browse", command=browse_marker)
-    mkr_button.grid(row=1, column=2, pady=10)
-
     tlbx_button = ttk.Button(text="Browse", command=browse_toolbox)
-    tlbx_button.grid(row=2, column=2, pady=10)
+    tlbx_button.grid(row=1, column=2, pady=10)
 
-    please = ttk.Label(text="Please select files", foreground="red")
+    mkr_button = ttk.Button(text="Browse", command=browse_marker)
+    mkr_button.grid(row=2, column=2, pady=10)
+
+    please = ttk.Label(text="Please Select a Toolbox File", foreground="red")
     please.grid(row=3, column=1, pady=10)
     submit = ttk.Button(text="Submit", command=on_submit)
     root.bind("<Return>", lambda enter: on_submit())
