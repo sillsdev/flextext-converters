@@ -313,7 +313,6 @@ def window_init(base_root, title, label):
 
     question_label = ttk.Label(new_window, text=label)
     question_label.pack(pady=10, padx=10)
-
     return new_window
 
 
