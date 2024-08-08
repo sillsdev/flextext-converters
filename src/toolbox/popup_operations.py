@@ -172,7 +172,6 @@ def table(question, mkr_map, headings):
         row_vals = list(tree.item(selected_item, "values"))
         if column_id == "#1" or column_id == "#2" or not row_vals:
             return
-        print(row_vals)
         text = headings[column_idx]
         drop_menu = type_list()
         label = "Select an Option in the Dropdown Menu"

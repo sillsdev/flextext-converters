@@ -2,10 +2,9 @@ import unicodedata
 import xml.dom.minidom
 from typing import List
 
+from flextext_models import Document, Item
+from uuid_generation import generate_uuid
 from xsdata.formats.dataclass.serializers import XmlSerializer
-
-from toolbox.flextext_models import Document, Item
-from toolbox.uuid_generation import generate_uuid
 
 
 def make_title(xml_it, title_lang, title_value):

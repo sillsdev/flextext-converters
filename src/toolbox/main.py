@@ -1,7 +1,7 @@
 from conversion_operations import convert
 from file_picker_operations import save_file
 from json_operations import load_map_from_json, save_map_to_json
-from marker_operations import compare_maps, read_markers
+from marker_operations import compare_maps
 from output_operations import output_flextext
 from popup_operations import select_file_window, table
 from toolbox_operations import toolbox_data_parser, toolbox_file_reader, toolbox_mapping
@@ -28,11 +28,7 @@ def main():
 
         else:
             # Convert to a JSON file
-            raw_markers = read_markers(marker_filename)
-
-            # output json markers
             json_marker_filename = make_json_filename(marker_filename)
-            save_map_to_json(raw_markers, json_marker_filename)
 
         # Create JSON dictionary with data
         json_map = load_map_from_json(json_marker_filename)
@@ -41,6 +37,7 @@ def main():
         markers = compare_maps(toolbox_map, json_map)
     else:
         markers = toolbox_map
+        json_marker_filename = "new_json_markers"
 
     heading = "Double Click the name or language box of a marker to edit it"
     heading_list = ["Marker", "Count", "Name", "Language"]
@@ -48,9 +45,10 @@ def main():
     # Create the UI table where the user can update the marker information
     updated_markers = table(heading, markers, heading_list)
 
-    flextext_filename = save_file(
-        "Input Name of Flextext File to Create", "fieldworks_files"
-    )
+    # output json markers
+    save_map_to_json(updated_markers, json_marker_filename)
+
+    flextext_filename = save_file("Input Name of Flextext File to Create")
     if not flextext_filename:
         quit()
     if not flextext_filename.endswith(".flextext"):
