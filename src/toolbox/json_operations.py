@@ -1,12 +1,10 @@
 import json
 import os
 
-from file_picker_operations import find_folder
-
 
 # Take a map and file path, and save map as JSON to that file
 def save_map_to_json(marker_map, file_path):
-    field_path = find_folder()
+    field_path = find_folder("fieldworks_files")
     base_name = os.path.basename(file_path)
     field_path = field_path + "/" + base_name
     if not field_path.endswith(".json"):
@@ -20,3 +18,10 @@ def load_map_from_json(file_path):
     with open(file_path, "r") as f:
         marker_map: object = json.load(f)
     return marker_map
+
+
+def find_folder(folder):
+    for base, directories, files in os.walk(os.getcwd()):
+        if folder in directories:
+            return os.path.join(base, folder)
+    return None

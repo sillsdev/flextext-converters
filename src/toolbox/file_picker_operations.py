@@ -1,4 +1,3 @@
-import os
 import tkinter as tk
 from tkinter import filedialog
 
@@ -21,10 +20,3 @@ def select_file(title, file_types):
 
 def save_file(title):
     return filedialog.asksaveasfilename(title=title, initialdir=DESTINATION)
-
-
-def find_folder(folder=DESTINATION):
-    for base, directories, files in os.walk(os.getcwd()):
-        if folder in directories:
-            return os.path.join(base, folder)
-    return None
