@@ -1,3 +1,4 @@
+import tkinter
 import tkinter as tk
 from tkinter import ttk
 from typing import List
@@ -188,6 +189,9 @@ def table(question, mkr_map, headings):
         save_btn = ttk.Button(edit_window, text="Save")
         save_btn.pack(pady=10, padx=10, side=tk.BOTTOM)
         dropdown, response = create_dropdown(edit_window, drop_menu, save_btn)
+        if text == "Language" and response:
+            # Only display the tag in the language
+            response = response.split()[0]
         row_vals[column_idx] = response
         tree.item(selected_item, values=row_vals)
         mkr_map[row_vals[0]][markers[column_idx - 1]] = row_vals[column_idx]
@@ -216,7 +220,7 @@ def table(question, mkr_map, headings):
             tree.insert("", "end", values=vals)
 
     tree.bind("<Double-1>", edit_cell)
-    tree.tag_configure("color", background="#282828")
+    tree.tag_configure("color", background="lightgrey")
 
     # Add a submit button
     button = ttk.Button(window, text="Submit", command=on_submit)
@@ -255,8 +259,8 @@ def select_file_window():
     marker_input.grid(row=2, column=1, pady=10)
 
     def browse_toolbox():
-        filetypes = [("Text files", "*.txt"), ("Toolbox files", "*.sfm")]
-        file = select_file("Select a ToolBox or Text File", filetypes)
+        filetypes = [("All Files", "*.*"), ("Toolbox Files", "*.sfm")]
+        file = select_file("Select a ToolBox File for Conversion", filetypes)
         if file:
             tlbx_response.set(file)
             please.grid_remove()
@@ -264,7 +268,12 @@ def select_file_window():
         root.focus_set()
 
     def browse_marker():
-        filetypes = [("Marker files", "*.typ"), ("JSON files", "*.json")]
+        filetypes = [
+            ("Marker and JSON Files", "*.typ *.json"),
+            ("JSON files", "*.json"),
+            "Marker Files",
+            "*.typ",
+        ]
         file = select_file("Select a Marker or JSON File", filetypes)
         if file:
             mkr_response.set(file)
@@ -327,18 +336,18 @@ def root_geometry(root):
     root.geometry(f"{width + 20}x{height + 20}+{x_offset}+{y_offset}")
 
 
-# Organizes an alphabetical language list starting with 2-letter codes
+# Organizes an alphabetical language list starting with 2-letter tags
 def language_list():
     lang_list: List[str] = []
     a2_idx = 0
     for lang in pycountry.languages:
-        # 2-letter codes
+        # 2-letter tags
         if hasattr(lang, "alpha_2"):
-            lang_list.insert(a2_idx, lang.name + ": " + lang.alpha_2)
+            lang_list.insert(a2_idx, lang.alpha_2 + " : " + lang.name)
             a2_idx += 1
-        # 3-letter codes
+        # 3-letter tags
         elif hasattr(lang, "alpha_3"):
-            lang_list.append(lang.name + ": " + lang.alpha_3)
+            lang_list.append(lang.alpha_3 + " : " + lang.name)
     return lang_list
 
 
