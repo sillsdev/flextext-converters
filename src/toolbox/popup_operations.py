@@ -82,7 +82,6 @@ def dropdown_resp(question, drop_menu):
 def create_dropdown(root, drop_menu, button):
     def on_down(*args):
         reopen_dropdown(dropdown)
-        dropdown.event_generate("<Down>")
 
     def on_submit(*args):
         if colored_box.cget("bg") == "green":
@@ -99,15 +98,28 @@ def create_dropdown(root, drop_menu, button):
     dropdown.pack(pady=10, side=tk.LEFT)
     colored_box = tk.Frame(middle_frame, width=20, height=20, bg="red")
     colored_box.pack(pady=10, padx=5, side=tk.LEFT)
-    if drop_menu == language_list():
-        response.trace(
-            "w", lambda *args: filter_languages(dropdown, response, colored_box)
-        )
-    else:
-        response.trace(
-            "w",
-            lambda *args: filter_dropdown(dropdown, drop_menu, response, colored_box),
-        )
+
+    def on_key(event):
+        try:
+            root.focus_get()
+        except KeyError:
+            key = event.keysym
+            if key != "Down" and key != "Up":
+                dropdown.focus_set()
+                dropdown.unbind_all("<KeyPress>")
+                dropdown.event_generate(f"<KeyPress-{key}>")
+                dropdown.bind_all("<KeyPress>", on_key)
+
+    dropdown.bind_all("<KeyPress>", on_key)
+    dropdown.event_generate("<KeyPress>")
+    current_bindtags = list(dropdown.bindtags())
+    current_bindtags.remove("all")
+    current_bindtags.insert(0, "all")
+    dropdown.bindtags(current_bindtags)
+    response.trace(
+        "w",
+        lambda *args: filter_dropdown(dropdown, drop_menu, response, colored_box),
+    )
     button.config(command=on_submit)
 
     def reset():
@@ -123,41 +135,32 @@ def create_dropdown(root, drop_menu, button):
     return dropdown, response.get()
 
 
-def filter_languages(dropdown, response, colored_box):
-    input_txt = response.get()
-    # Filters based on your response matching a word in one of the options
-    dropdown["values"] = [
-        option
-        for option in language_list()
-        if any(word.lower().startswith(input_txt.lower()) for word in option.split())
-        or option.lower().startswith(input_txt.lower())
-    ]
-    dropdown.event_generate("<Escape>")
-    if response.get() in dropdown["values"] or (
-        tag_is_valid(response.get()) and not dropdown["values"]
+def filter_dropdown(dropdown, drop_menu, response, colored_box):
+    # Filters based on if your response is found anywhere in one of the options
+    if response.get():
+        response_upper = response.get()[0].upper() + response.get()[1:]
+        dropdown["values"] = [
+            option
+            for option in drop_menu
+            if response_upper in option
+            or response_upper in option.capitalize()
+            or option.lower().startswith(response.get().lower())
+        ]
+    else:
+        dropdown["values"] = drop_menu
+    if response.get() in dropdown["values"]:
+        colored_box.config(bg="green")
+    elif (
+        drop_menu == language_list()
+        and tag_is_valid(response.get())
+        and not dropdown["values"]
     ):
         colored_box.config(bg="green")
     else:
         colored_box.config(bg="red")
-    if dropdown["values"]:
-        dropdown.event_generate("<Button-1>")
-        dropdown.focus_set()
-
-
-def filter_dropdown(dropdown, drop_menu, response, colored_box):
-    input_txt = response.get()
-    # Filters based on if your response is found anywhere in one of the options
-    dropdown["values"] = [
-        option for option in drop_menu if input_txt.lower() in option.lower()
-    ]
-    if response.get() in dropdown["values"]:
-        colored_box.config(bg="green")
-    else:
-        colored_box.config(bg="red")
     dropdown.event_generate("<Escape>")
     if dropdown["values"]:
         dropdown.event_generate("<Button-1>")
-        dropdown.focus_set()
 
 
 def reopen_dropdown(dropdown):
