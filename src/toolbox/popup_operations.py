@@ -1,4 +1,3 @@
-import tkinter
 import tkinter as tk
 from tkinter import ttk
 from typing import List
@@ -80,24 +79,14 @@ def dropdown_resp(question, drop_menu):
 
 
 def create_dropdown(root, drop_menu, button):
-    def on_down(*args):
-        reopen_dropdown(dropdown)
-
     def on_submit(*args):
         if colored_box.cget("bg") == "green":
             button.event_generate("<Button-1>")
             root.after(100, root.destroy())
         else:
-            reopen_dropdown(dropdown)
+            reopen_dropdown()
+            dropdown.update()
             dropdown.event_generate("<Return>")
-
-    response = tk.StringVar()
-    middle_frame = tk.Frame(root)
-    middle_frame.pack(pady=10, padx=10, expand=True)
-    dropdown = ttk.Combobox(middle_frame, textvariable=response, values=drop_menu)
-    dropdown.pack(pady=10, side=tk.LEFT)
-    colored_box = tk.Frame(middle_frame, width=20, height=20, bg="red")
-    colored_box.pack(pady=10, padx=5, side=tk.LEFT)
 
     def on_key(event):
         try:
@@ -106,66 +95,71 @@ def create_dropdown(root, drop_menu, button):
             key = event.keysym
             if key != "Down" and key != "Up":
                 dropdown.focus_set()
-                dropdown.unbind_all("<KeyPress>")
+                dropdown.update()
                 dropdown.event_generate(f"<KeyPress-{key}>")
-                dropdown.bind_all("<KeyPress>", on_key)
 
-    dropdown.bind_all("<KeyPress>", on_key)
-    dropdown.event_generate("<KeyPress>")
-    current_bindtags = list(dropdown.bindtags())
-    current_bindtags.remove("all")
-    current_bindtags.insert(0, "all")
-    dropdown.bindtags(current_bindtags)
-    response.trace(
-        "w",
-        lambda *args: filter_dropdown(dropdown, drop_menu, response, colored_box),
-    )
-    button.config(command=on_submit)
+    def filter_dropdown(*args):
+        if response.get():
+            # Capitalizes each word of response and checks if it's in dropdown
+            split_response = response.get().split(" ")
+            cap_words = [word.capitalize() for word in split_response]
+            response_upper = " ".join(cap_words)
+            dropdown["values"] = [
+                option
+                for option in drop_menu
+                if response_upper in option
+                or option.lower().startswith(response.get().lower())
+            ]
+        else:
+            dropdown["values"] = drop_menu
+        if response.get() in dropdown["values"]:
+            colored_box.config(bg="green")
+        elif (
+            not dropdown["values"]
+            and tag_is_valid(response.get())
+            and drop_menu == language_list()
+        ):
+            # Checks for valid language tags
+            colored_box.config(bg="green")
+        else:
+            colored_box.config(bg="red")
+        dropdown.event_generate("<Escape>")
+        if dropdown["values"]:
+            dropdown.event_generate("<Button-1>")
+
+    def reopen_dropdown():
+        dropdown.event_generate("<Escape>")
+        dropdown.event_generate("<Button-1>")
 
     def reset():
         response.set("")
         root.destroy()
 
+    response = tk.StringVar()
+    response.trace("w", filter_dropdown)
+    button.config(command=on_submit)
+
+    middle_frame = tk.Frame(root)
+    middle_frame.pack(pady=10, padx=10, expand=True)
+    dropdown = ttk.Combobox(middle_frame, textvariable=response, values=drop_menu)
+    dropdown.pack(pady=10, side=tk.LEFT)
+    colored_box = tk.Frame(middle_frame, width=20, height=20, bg="red")
+    colored_box.pack(pady=10, padx=5, side=tk.LEFT)
+
+    # Make sure "bind_all" command executes first
+    current_bindtags = list(dropdown.bindtags())
+    current_bindtags.remove("all")
+    current_bindtags.insert(0, "all")
+    dropdown.bindtags(current_bindtags)
+
     root.bind("<Return>", on_submit)
-    root.bind("<Down>", on_down)
+    root.bind("<Down>", reopen_dropdown)
+    dropdown.bind_all("<KeyPress>", on_key)
     root_geometry(root)
     dropdown.focus_set()
     root.protocol("WM_DELETE_WINDOW", reset)
     root.wait_window(root)
     return dropdown, response.get()
-
-
-def filter_dropdown(dropdown, drop_menu, response, colored_box):
-    # Filters based on if your response is found anywhere in one of the options
-    if response.get():
-        response_upper = response.get()[0].upper() + response.get()[1:]
-        dropdown["values"] = [
-            option
-            for option in drop_menu
-            if response_upper in option
-            or response_upper in option.capitalize()
-            or option.lower().startswith(response.get().lower())
-        ]
-    else:
-        dropdown["values"] = drop_menu
-    if response.get() in dropdown["values"]:
-        colored_box.config(bg="green")
-    elif (
-        drop_menu == language_list()
-        and tag_is_valid(response.get())
-        and not dropdown["values"]
-    ):
-        colored_box.config(bg="green")
-    else:
-        colored_box.config(bg="red")
-    dropdown.event_generate("<Escape>")
-    if dropdown["values"]:
-        dropdown.event_generate("<Button-1>")
-
-
-def reopen_dropdown(dropdown):
-    dropdown.event_generate("<Escape>")
-    dropdown.event_generate("<Button-1>")
 
 
 def table(question, mkr_map, headings):
