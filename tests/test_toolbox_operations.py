@@ -9,9 +9,9 @@
         testing file for toolbox operations
 """
 
-import os
 from unittest import TestCase
 
+from tests.test_json_operations import adjust_path
 from toolbox.toolbox_operations import toolbox_data_parser, toolbox_file_reader
 
 
@@ -22,9 +22,7 @@ def test_toolbox_file_reader():
         "\\ft It is a freeform translation.\n\\nt"
     )
 
-    file = "example_test_files/toolbox_test.sfm"
-    if "TOX_ENV_NAME" in os.environ:
-        file = "tests/" + file
+    file = adjust_path("example_test_files/toolbox_test.sfm")
     assert toolbox_file_reader(file) == toolbox_test_data
 
 
@@ -34,9 +32,7 @@ def test_toolbox_file_reader1():
         "\\tx This is some test data\n\\ge this is some test data\n"
         "\n\\ft\n\\nt"
     )
-    file = "example_test_files/toolbox_test1.sfm"
-    if "TOX_ENV_NAME" in os.environ:
-        file = "tests/" + file
+    file = adjust_path("example_test_files/toolbox_test1.sfm")
     assert toolbox_file_reader(file) == toolbox_test_data
 
 
@@ -51,9 +47,7 @@ def test_toolbox_file_reader2():
         "\\mg nice, what about the other things\n"
         "\n\\nt"
     )
-    file = "example_test_files/toolbox_test2.sfm"
-    if "TOX_ENV_NAME" in os.environ:
-        file = "tests/" + file
+    file = adjust_path("example_test_files/toolbox_test2.sfm")
     assert toolbox_file_reader(file) == toolbox_test_data
 
 

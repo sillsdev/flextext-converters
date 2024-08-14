@@ -1,6 +1,6 @@
-import os
 from unittest import TestCase
 
+from tests.test_json_operations import adjust_path
 from toolbox.marker_operations import read_markers
 
 # Expected map for test_read_markers1
@@ -37,31 +37,23 @@ test_map4 = {"\\dt": sub_test_map1, "\\f": sub2_test_map4}
 def test_read_markers1():
     # Tests if correctly parses one marker
     # First path is if running in pycharm, second is if running in tox
-    path = "./example_test_files/marker_text1.typ"
-    if "TOX_ENV_NAME" in os.environ:
-        path = "./tests/example_test_files/marker_text1.typ"
+    path = adjust_path("./example_test_files/marker_text1.typ")
     TestCase().assertDictEqual(read_markers(path), test_map1)
 
 
 def test_read_markers2():
     # Tests if correctly parses one marker with font variables
-    path = "./example_test_files/marker_text2.typ"
-    if "TOX_ENV_NAME" in os.environ:
-        path = "./tests/example_test_files/marker_text2.typ"
+    path = adjust_path("./example_test_files/marker_text2.typ")
     TestCase().assertDictEqual(read_markers(path), test_map2)
 
 
 def test_read_markers3():
     # Tests if correctly parses two markers, one with font variables
-    path = "./example_test_files/marker_text3.typ"
-    if "TOX_ENV_NAME" in os.environ:
-        path = "./tests/example_test_files/marker_text3.typ"
+    path = adjust_path("./example_test_files/marker_text3.typ")
     TestCase().assertDictEqual(read_markers(path), test_map3)
 
 
 def test_read_markers4():
     # Tests it correctly parses two markers
-    path = "./example_test_files/marker_text4.typ"
-    if "TOX_ENV_NAME" in os.environ:
-        path = "./tests/example_test_files/marker_text4.typ"
+    path = adjust_path("./example_test_files/marker_text4.typ")
     TestCase().assertDictEqual(read_markers(path), test_map4)

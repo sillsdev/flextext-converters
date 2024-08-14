@@ -62,7 +62,6 @@ def convert(toolbox_data, markers):
                 continue
 
             marker = markers[start_code]
-            # text_type = int(marker["text_type"])
             text_type = marker["\\nam"]
             language = marker["\\lng"]
             text = line[1:]
@@ -73,7 +72,6 @@ def convert(toolbox_data, markers):
                 continue
 
             match text_type:
-                # 1: word
                 case "Word":
                     # item
                     phrase_item = Item()
@@ -102,23 +100,18 @@ def convert(toolbox_data, markers):
                         xml_word.item.append(word_item)
                         xml_words.word.append(xml_word)
 
-                # 2: morphemes
                 case "Morphemes":
                     pass
 
-                # 3 lex. entries
                 case "Lex. Entries":
                     pass
 
-                # 4 lex. gloss
                 case "Lex. Gloss":
                     pass
 
-                # 5 lex. gram info
                 case "Lex. Gram Info":
                     pass
 
-                # 6 word gloss
                 case "Word Gloss":
                     # item
                     phrase_item = Item()
@@ -163,11 +156,9 @@ def convert(toolbox_data, markers):
                         xml_morphemes.morph.append(xml_morph)
                         xml_word.morphemes.append(xml_morphemes)
 
-                # 7 word cat
                 case "Word Cat.":
                     pass
 
-                # 8 free translation
                 case "Free Translation":
                     # item
                     phrase_item = Item()
@@ -176,7 +167,6 @@ def convert(toolbox_data, markers):
                     phrase_item.value = text
                     xml_phrase.item.append(phrase_item)
 
-                # 9 literal translation
                 case "Literal Translation":
                     phrase_item = Item()
                     phrase_item.type_value = "lit"
@@ -184,7 +174,6 @@ def convert(toolbox_data, markers):
                     phrase_item.value = text
                     xml_phrase.item.append(phrase_item)
 
-                # 10 note
                 case "Note":
                     phrase_item = Item()
                     phrase_item.type_value = "note"

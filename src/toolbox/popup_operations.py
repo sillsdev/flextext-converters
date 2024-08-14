@@ -7,83 +7,13 @@ from file_picker_operations import select_file
 from langcodes import tag_is_valid
 
 
-def closed_resp(question, button_list, key_list):
-    root = root_init(question)
-    response = tk.StringVar()
-
-    button_frame = tk.Frame(root)
-    button_frame.pack(pady=10)
-
-    def on_submit(btn: ttk.Button):
-        response.set(btn["text"])
-        btn.event_generate("<Button-1>")
-        root.after(100, root.destroy)
-
-    for idx in range(len(button_list)):
-        button = ttk.Button(
-            button_frame,
-            text=button_list[idx],
-            underline=button_list[idx].find(key_list[idx]),
-        )
-
-        def lambda_func(b=button):
-            return on_submit(b)
-
-        button.grid(row=idx // 5, column=idx % 5, padx=5, pady=5)
-        button.config(command=lambda_func)
-        root.bind(
-            f"<KeyPress-{key_list[idx].lower()}>",
-            lambda event, b=button: on_submit(b),
-        )
-
-    root_geometry(root)
-    root.mainloop()
-    return response.get()
-
-
-def open_resp(question):
-    root = root_init(question)
-    response = tk.StringVar()
-
-    # Make user input
-    user_input = tk.Entry(root, width=27)
-    user_input.pack(pady=10, padx=45)
-    user_input.focus_set()
-
-    def on_submit():
-        if user_input.get():
-            button.event_generate("<Button-1>")
-            response.set(user_input.get())
-            root.after(100, root.destroy)
-
-    # Make submit button
-    button = ttk.Button(root, text="Submit", command=on_submit)
-    button.pack(pady=10)
-    root.bind("<Return>", lambda event: on_submit())
-
-    root_geometry(root)
-    root.mainloop()
-    return response.get()
-
-
-def dropdown_resp(question, drop_menu):
-    root = root_init(question)
-
-    # Make submit button
-    button = tk.Button(root, text="Submit", state=tk.DISABLED)
-    button.pack(side=tk.BOTTOM, padx=10, pady=10)
-
-    # Create Dropdown
-    response = create_dropdown(root, drop_menu, button)
-    return response
-
-
 def create_dropdown(root, drop_menu, button):
     def on_submit(*args):
         if colored_box.cget("bg") == "green":
             button.event_generate("<Button-1>")
             root.after(100, root.destroy())
         else:
+            # Select the first option in the dropdown
             reopen_dropdown()
             dropdown.update()
             dropdown.event_generate("<Return>")
@@ -94,32 +24,23 @@ def create_dropdown(root, drop_menu, button):
         except KeyError:
             key = event.keysym
             if key != "Down" and key != "Up":
+                # Set focus to the dropdown and re-generate the key press
                 dropdown.focus_set()
                 dropdown.update()
                 dropdown.event_generate(f"<KeyPress-{key}>")
 
     def filter_dropdown(*args):
-        if response.get():
-            # Capitalizes each word of response and checks if it's in dropdown
-            split_response = response.get().split(" ")
-            cap_words = [word.capitalize() for word in split_response]
-            response_upper = " ".join(cap_words)
-            dropdown["values"] = [
-                option
-                for option in drop_menu
-                if response_upper in option
-                or option.lower().startswith(response.get().lower())
-            ]
-        else:
-            dropdown["values"] = drop_menu
-        if response.get() in dropdown["values"]:
-            colored_box.config(bg="green")
-        elif (
-            not dropdown["values"]
-            and tag_is_valid(response.get())
-            and drop_menu == language_list()
-        ):
-            # Checks for valid language tags
+        # Capitalizes each word of response and checks if it's in dropdown
+        split_response = response.get().split(" ")
+        cap_words = [word.capitalize() for word in split_response]
+        response_upper = " ".join(cap_words)
+        dropdown["values"] = [
+            option
+            for option in drop_menu
+            if response_upper in option
+            or option.lower().startswith(response.get().lower())
+        ]
+        if response.get() in dropdown["values"] or valid_tag():
             colored_box.config(bg="green")
         else:
             colored_box.config(bg="red")
@@ -127,7 +48,7 @@ def create_dropdown(root, drop_menu, button):
         if dropdown["values"]:
             dropdown.event_generate("<Button-1>")
 
-    def reopen_dropdown():
+    def reopen_dropdown(*args):
         dropdown.event_generate("<Escape>")
         dropdown.event_generate("<Button-1>")
 
@@ -135,10 +56,16 @@ def create_dropdown(root, drop_menu, button):
         response.set("")
         root.destroy()
 
+    def valid_tag():
+        # Checks for valid language tags
+        return not dropdown["values"] and tag_is_valid(response.get())\
+            and drop_menu == language_list()
+
     response = tk.StringVar()
     response.trace("w", filter_dropdown)
     button.config(command=on_submit)
 
+    # Create a frame holding the dropdown and color box on same horizontal axis
     middle_frame = tk.Frame(root)
     middle_frame.pack(pady=10, padx=10, expand=True)
     dropdown = ttk.Combobox(middle_frame, textvariable=response, values=drop_menu)
@@ -187,8 +114,7 @@ def table(question, mkr_map, headings):
         save_btn.pack(pady=10, padx=10, side=tk.BOTTOM)
         dropdown, response = create_dropdown(edit_window, drop_menu, save_btn)
         if text == "Language" and response:
-            # Only display the tag in the language
-            response = response.split()[0]
+            response = response.split()[0]  # Only display language tag
         row_vals[column_idx] = response
         tree.item(selected_item, values=row_vals)
         mkr_map[row_vals[0]][markers[column_idx - 1]] = row_vals[column_idx]
@@ -201,8 +127,9 @@ def table(question, mkr_map, headings):
     window = root_init(question)
     tree = ttk.Treeview(window, columns=headings, show="headings")
     for heading in headings:
-        tree.heading(heading, text=heading, anchor=tk.W)
+        tree.heading(heading, text=heading)
 
+    # Initialize all values and insert them into the tree
     for idx, key in enumerate(mkr_map.keys()):
         vals = ["" for _ in range(len(headings))]
         vals[0] = key
@@ -302,7 +229,7 @@ def on_close():
 
 def root_init(question, grid=False):
     root = tk.Tk()
-    root.title("<<< Toolbox to FlexText File Converter >>>")
+    root.title("Toolbox to FlexText File Converter")
     root.protocol("WM_DELETE_WINDOW", on_close)
 
     # Question or command
@@ -323,6 +250,7 @@ def window_init(base_root, title, label):
     return new_window
 
 
+# Review: Make sure this is monitor independent
 def root_geometry(root):
     # Set the root towards the middle of the screen
     root.update_idletasks()
@@ -330,7 +258,7 @@ def root_geometry(root):
     height = root.winfo_height()
     x_offset = (root.winfo_screenwidth() // 2) - (width // 2)
     y_offset = (root.winfo_screenheight() // 3) - (height // 2)
-    root.geometry(f"{width + 20}x{height + 20}+{x_offset}+{y_offset}")
+    root.geometry(f"{width}x{height}+{x_offset}+{y_offset}")
 
 
 # Organizes an alphabetical language list starting with 2-letter tags

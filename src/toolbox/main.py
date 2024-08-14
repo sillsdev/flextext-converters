@@ -1,7 +1,7 @@
 from conversion_operations import convert
 from file_picker_operations import save_file
 from json_operations import load_map_from_json, save_map_to_json
-from marker_operations import compare_maps
+from marker_operations import combine_maps
 from output_operations import output_flextext
 from popup_operations import select_file_window, table
 from toolbox_operations import toolbox_data_parser, toolbox_file_reader, toolbox_mapping
@@ -15,7 +15,7 @@ def make_json_filename(marker_filename):
 
 
 def main():
-    # Get the name of the marker/json (if one is selected) and toolbox file
+    # Get name of marker/json file (if one is selected) and toolbox file
     marker_filename, toolbox_filename = select_file_window()
 
     # Create a dictionary holding data like name and language
@@ -33,8 +33,8 @@ def main():
         # Create JSON dictionary with data
         json_map = load_map_from_json(json_marker_filename)
 
-        # Compare and combine the two dictionaries
-        markers = compare_maps(toolbox_map, json_map)
+        # Combines the two maps and outputs the new map
+        markers = combine_maps(toolbox_map, json_map)
     else:
         markers = toolbox_map
         json_marker_filename = "new_json_markers"

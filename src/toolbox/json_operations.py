@@ -20,6 +20,7 @@ def load_map_from_json(file_path):
     return marker_map
 
 
+# If the folder exists, returns the path to it
 def find_folder(folder):
     for base, directories, files in os.walk(os.getcwd()):
         if folder in directories:

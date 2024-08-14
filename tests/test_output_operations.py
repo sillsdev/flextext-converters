@@ -3,10 +3,8 @@ import stat
 
 import pytest
 
+from tests.test_json_operations import adjust_path
 from toolbox.output_operations import output_flextext
-
-# import tox
-
 
 simple_sample_string = """This is a simple list of strings
 These strings are in simple in nature
@@ -63,18 +61,14 @@ complex_sample_string = """<?xml version="1.0" encoding="utf-8"?>
 
 # Tests that files are created
 def test_file_creation():
-    output_path = "./output_test_files/test_file_creation.flextext"
-    if "TOX_ENV_NAME" in os.environ:
-        output_path = "./tests" + output_path[1:]
+    output_path = adjust_path("./output_test_files/test_file_creation.flextext")
     output_flextext(output_path, simple_sample_string)
     assert os.path.isfile(output_path) is True
 
 
 # Test that output in file matches input with a simple string list
 def test_file_contents_simple():
-    output_path = "./output_test_files/test_file_contents_simple.flextext"
-    if "TOX_ENV_NAME" in os.environ:
-        output_path = "./tests" + output_path[1:]
+    output_path = adjust_path("./output_test_files/test_file_contents_simple.flextext")
     output_flextext(output_path, simple_sample_string)
 
     with open(output_path, "r") as file:
@@ -85,9 +79,7 @@ def test_file_contents_simple():
 
 # Test that output in file matches input with a complex & realistic string list
 def test_file_contents_complex():
-    output_path = "./output_test_files/test_file_contents_complex.flextext"
-    if "TOX_ENV_NAME" in os.environ:
-        output_path = "./tests" + output_path[1:]
+    output_path = adjust_path("./output_test_files/test_file_contents_complex.flextext")
     output_flextext(output_path, complex_sample_string)
 
     with open(output_path, "r") as file:
@@ -98,9 +90,7 @@ def test_file_contents_complex():
 
 # Test that an exception is thrown when an invalid path is provided
 def test_invalid_file_path():
-    output_path = "./fake_folder/fake_file.flextext"
-    if "TOX_ENV_NAME" in os.environ:
-        output_path = "./tests" + output_path[1:]
+    output_path = adjust_path("./fake_folder/fake_file.flextext")
     with pytest.raises(FileNotFoundError):
         output_flextext(output_path, simple_sample_string)
 
@@ -108,9 +98,7 @@ def test_invalid_file_path():
 # Test that an exception is thrown when the file is un-writeable
 def test_no_write_perms():
     # Create the file first
-    output_path = "./output_test_files/test_no_write_perms.flextext"
-    if "TOX_ENV_NAME" in os.environ:
-        output_path = "./tests" + output_path[1:]
+    output_path = adjust_path("./output_test_files/test_no_write_perms.flextext")
     with open(output_path, "w") as f:
         f.write("This file shouldn't have been modified.")
 
