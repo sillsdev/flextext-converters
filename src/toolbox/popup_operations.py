@@ -58,8 +58,11 @@ def create_dropdown(root, drop_menu, button):
 
     def valid_tag():
         # Checks for valid language tags
-        return not dropdown["values"] and tag_is_valid(response.get())\
+        return (
+            not dropdown["values"]
+            and tag_is_valid(response.get())
             and drop_menu == language_list()
+        )
 
     response = tk.StringVar()
     response.trace("w", filter_dropdown)
