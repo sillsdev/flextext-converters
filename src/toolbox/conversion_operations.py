@@ -2,10 +2,9 @@ import unicodedata
 import xml.dom.minidom
 from typing import List
 
+from flextext_models import Document, Item
+from uuid_generation import generate_uuid
 from xsdata.formats.dataclass.serializers import XmlSerializer
-
-from toolbox.flextext_models import Document, Item
-from toolbox.uuid_generation import generate_uuid
 
 
 def make_title(xml_it, title_lang, title_value):
@@ -63,7 +62,7 @@ def convert(toolbox_data, markers):
                 continue
 
             marker = markers[start_code]
-            text_type = int(marker["text_type"])
+            text_type = marker["\\nam"]
             language = marker["\\lng"]
             text = line[1:]
 
@@ -73,8 +72,7 @@ def convert(toolbox_data, markers):
                 continue
 
             match text_type:
-                # word
-                case 1:
+                case "Word":
                     # item
                     phrase_item = Item()
                     phrase_item.type_value = "txt"
@@ -102,24 +100,19 @@ def convert(toolbox_data, markers):
                         xml_word.item.append(word_item)
                         xml_words.word.append(xml_word)
 
-                # morphemes
-                case 2:
+                case "Morphemes":
                     pass
 
-                # lex. entries
-                case 3:
+                case "Lex. Entries":
                     pass
 
-                # lex. gloss
-                case 4:
+                case "Lex. Gloss":
                     pass
 
-                # lex. gram info
-                case 5:
+                case "Lex. Gram Info":
                     pass
 
-                # word gloss
-                case 6:
+                case "Word Gloss":
                     # item
                     phrase_item = Item()
                     phrase_item.type_value = "gls"
@@ -163,12 +156,10 @@ def convert(toolbox_data, markers):
                         xml_morphemes.morph.append(xml_morph)
                         xml_word.morphemes.append(xml_morphemes)
 
-                # word cat
-                case 7:
+                case "Word Cat.":
                     pass
 
-                # free translation
-                case 8:
+                case "Free Translation":
                     # item
                     phrase_item = Item()
                     phrase_item.type_value = "gls"
@@ -176,16 +167,14 @@ def convert(toolbox_data, markers):
                     phrase_item.value = text
                     xml_phrase.item.append(phrase_item)
 
-                # literal translation
-                case 9:
+                case "Literal Translation":
                     phrase_item = Item()
                     phrase_item.type_value = "lit"
                     phrase_item.lang = language
                     phrase_item.value = text
                     xml_phrase.item.append(phrase_item)
 
-                # note
-                case 10:
+                case "Note":
                     phrase_item = Item()
                     phrase_item.type_value = "note"
                     phrase_item.lang = language
