@@ -11,6 +11,7 @@
 
 from unittest import TestCase
 
+from tests.test_json_operations import adjust_path
 from toolbox.toolbox_operations import toolbox_data_parser, toolbox_file_reader
 
 
@@ -20,7 +21,8 @@ def test_toolbox_file_reader():
         "\\tx This has a translation.\n"
         "\\ft It is a freeform translation.\n\\nt"
     )
-    file = "tests/example_test_files/toolbox_test.sfm"
+
+    file = adjust_path("example_test_files/toolbox_test.sfm")
     assert toolbox_file_reader(file) == toolbox_test_data
 
 
@@ -30,7 +32,7 @@ def test_toolbox_file_reader1():
         "\\tx This is some test data\n\\ge this is some test data\n"
         "\n\\ft\n\\nt"
     )
-    file = "tests/example_test_files/toolbox_test1.sfm"
+    file = adjust_path("example_test_files/toolbox_test1.sfm")
     assert toolbox_file_reader(file) == toolbox_test_data
 
 
@@ -45,7 +47,7 @@ def test_toolbox_file_reader2():
         "\\mg nice, what about the other things\n"
         "\n\\nt"
     )
-    file = "tests/example_test_files/toolbox_test2.sfm"
+    file = adjust_path("example_test_files/toolbox_test2.sfm")
     assert toolbox_file_reader(file) == toolbox_test_data
 
 

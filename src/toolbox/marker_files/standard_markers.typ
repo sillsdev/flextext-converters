@@ -53,7 +53,7 @@
 # LexEntries
 \+mkr le
 \nam le
--mkr
+\-mkr
 
 # LexPartOfSpeech
 \+mkr lp

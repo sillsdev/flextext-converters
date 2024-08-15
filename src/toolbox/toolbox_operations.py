@@ -25,21 +25,40 @@
 """
 
 import unicodedata
-from typing import List
+from typing import Any, Dict, List
 
 
 def toolbox_file_reader(filename):  # read in toolbox file
-    with open(filename, "r") as f:
+    # Use the "iso8859_5" encoding to avoid problems with characters which are not utf-8
+    with open(filename, "r", encoding="iso8859_5") as f:
         toolbox_data = f.read()
 
     return toolbox_data
 
 
-def toolbox_data_parser(toolbox_data):
+# Creates a map from the toolbox file
+def toolbox_mapping(toolbox_data):
+    map1: Dict[str, Dict[str, Any]] = {}
+    lines = toolbox_data.split("\n")
+    for line in lines:
+        if line == "":
+            continue
+        if "\\" == line[0]:
+            mkr = line.split()[0]
+            # Initializes "name" and "language" keys and sets "count" key
+            if mkr in map1.keys():
+                map1[mkr]["Count"] = map1[mkr]["Count"] + 1
+            else:
+                map1[mkr] = {}
+                map1[mkr]["\\lng"] = ""
+                map1[mkr]["\\nam"] = ""
+                map1[mkr]["Count"] = 1
+    return map1
 
-    paragraphs = toolbox_data.split(
-        "\n\n"
-    )  # list of all the paragraphs in toolbox_data
+
+def toolbox_data_parser(toolbox_data):
+    # list of all the paragraphs in toolbox_data
+    paragraphs = toolbox_data.split("\n\n")
     final_list = []
 
     for paragraph in paragraphs:

@@ -1,9 +1,10 @@
 from conversion_operations import convert
-from file_picker_operations import file_picker
+from file_picker_operations import save_file
 from json_operations import load_map_from_json, save_map_to_json
-from marker_operations import define_markers, read_markers
+from marker_operations import combine_maps
 from output_operations import output_flextext
-from toolbox_operations import toolbox_data_parser, toolbox_file_reader
+from popup_operations import select_file_window, table
+from toolbox_operations import toolbox_data_parser, toolbox_file_reader, toolbox_mapping
 
 
 # method to turn a marker filename into a json marker filename
@@ -14,62 +15,53 @@ def make_json_filename(marker_filename):
 
 
 def main():
-    print("<<< Toolbox to FieldWorks File Converter >>>\n")
+    # Get name of marker/json file (if one is selected) and toolbox file
+    marker_filename, toolbox_filename = select_file_window()
 
-    # marker filename
-    answer = input(
-        "Is there a previously defined JSON marker file you want to use? Y/N: "
-    )
+    # Create a dictionary holding data like name and language
+    toolbox_map = toolbox_mapping(toolbox_file_reader(toolbox_filename))
 
-    if answer.upper() == "Y":
-        print("Select a defined JSON marker file")
-        json_marker_filename = file_picker()
+    # Check if a marker file was selected
+    if marker_filename:
+        if marker_filename.endswith(".json"):
+            json_marker_filename = marker_filename
 
-        while json_marker_filename == "" or not json_marker_filename.endswith(".json"):
-            print("Error; invalid file. Select a defined JSON marker file")
-            json_marker_filename = file_picker()
+        else:
+            # Convert to a JSON file
+            json_marker_filename = make_json_filename(marker_filename)
+
+        # Create JSON dictionary with data
+        json_map = load_map_from_json(json_marker_filename)
+
+        # Combines the two maps and outputs the new map
+        markers = combine_maps(toolbox_map, json_map)
     else:
-        print("Select a marker file")
-        marker_filename = file_picker()
+        markers = toolbox_map
+        json_marker_filename = "new_json_markers"
 
-        while marker_filename == "" or not marker_filename.endswith(".typ"):
-            print("Error; invalid file. Select a marker file")
-            marker_filename = file_picker()
+    heading = "Double Click the name or language box of a marker to edit it"
+    heading_list = ["Marker", "Count", "Name", "Language"]
 
-        # get raw markers
-        raw_markers = read_markers(marker_filename)
+    # Create the UI table where the user can update the marker information
+    updated_markers = table(heading, markers, heading_list)
 
-        # ask user about markers
-        defined_markers = define_markers(raw_markers)
+    # output json markers
+    save_map_to_json(updated_markers, json_marker_filename)
 
-        # output json markers
-        json_marker_filename = make_json_filename(marker_filename)
-        save_map_to_json(defined_markers, json_marker_filename)
-
-    # read in json markers
-    json_markers = load_map_from_json(json_marker_filename)
-
-    # toolbox filename
-    print("Select a Toolbox file to convert")
-    toolbox_filename = file_picker()
-    while toolbox_filename == "":
-        print("Error; invalid file. Select a Toolbox file to convert")
-        toolbox_filename = file_picker()
-
-    # fieldworks filename
-    fieldworks_filename = f"fieldworks_files/{input('Input name of FieldWorks file to create (to fieldworks_files folder): ')}"
+    flextext_filename = save_file("Input Name of Flextext File to Create")
+    if not flextext_filename:
+        quit()
+    if not flextext_filename.endswith(".flextext"):
+        flextext_filename += ".flextext"
 
     # get toolbox data
     toolbox_data = toolbox_data_parser(toolbox_file_reader(toolbox_filename))
 
     # convert data
-    converted_xml = convert(toolbox_data, json_markers)
+    converted_xml = convert(toolbox_data, updated_markers)
 
     # output the converted data
-    output_flextext(fieldworks_filename, converted_xml)
-
-    print(f'Converter successful\nFieldWorks file located at: "{fieldworks_filename}"')
-    print("\n<<< Converter Termination >>>")
+    output_flextext(flextext_filename, converted_xml)
 
 
 if __name__ == "__main__":
