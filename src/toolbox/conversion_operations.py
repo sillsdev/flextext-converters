@@ -100,17 +100,25 @@ def convert(toolbox_data, markers):
                         xml_word.item.append(word_item)
                         xml_words.word.append(xml_word)
 
+            # words
+            xml_word_list: List[
+                "Document.InterlinearText.Paragraphs.Paragraph.Phrases.Phrase.Words.Word"
+            ] = []
+            if xml_phrase.words is not None:
+                xml_word_list = xml_phrase.words.word
+
+            match text_type:
                 case "Morphemes":
                     pass
 
                 case "Lex. Entries":
-                    pass
+                    create_morph_items(xml_word_list, text, language, "cf")
 
                 case "Lex. Gloss":
-                    pass
+                    create_morph_items(xml_word_list, text, language, "gls")
 
-                case "Lex. Gram Info":
-                    pass
+                case "Lex. Gram. Info":
+                    create_morph_items(xml_word_list, text, language, "msa")
 
                 case "Word Gloss":
                     # item
@@ -121,17 +129,12 @@ def convert(toolbox_data, markers):
                     xml_phrase.item.append(phrase_item)
 
                     # words
-                    xml_word_list: List[
-                        "Document.InterlinearText.Paragraphs.Paragraph.Phrases.Phrase.Words.Word"
-                    ] = []
-                    if xml_phrase.words is not None:
-                        xml_word_list = xml_phrase.words.word
                     for i in range(min(len(xml_word_list), len(text))):
                         xml_word = xml_word_list[i]
                         txt_item = xml_word.item[0]
                         gloss_word = text[i]
                         gloss_item = Item()
-                        gloss_item.type_value = "gls"
+                        gloss_item.type_value = "word gls"
                         gloss_item.lang = language
                         gloss_item.value = gloss_word
                         xml_word.item.append(gloss_item)
@@ -162,7 +165,7 @@ def convert(toolbox_data, markers):
                 case "Free Translation":
                     # item
                     phrase_item = Item()
-                    phrase_item.type_value = "gls"
+                    phrase_item.type_value = "free"
                     phrase_item.lang = language
                     phrase_item.value = text
                     xml_phrase.item.append(phrase_item)
@@ -189,3 +192,31 @@ def convert(toolbox_data, markers):
     converted_xml = temp.toprettyxml()
 
     return converted_xml
+
+
+def create_morph_items(xml_word_list, text, language, item_type_value):
+    for i in range(min(len(xml_word_list), len(text))):
+        xml_word = xml_word_list[i]
+        word = text[i]
+        item = Item()
+        item.type_value = item_type_value
+        item.lang = language
+        item.value = word
+
+        # morph item text
+        xml_morph_item = Item()
+        xml_morph_item.value = item.value
+        xml_morph_item.lang = item.lang
+        xml_morph_item.type_value = item.type_value
+
+        # morphemes and morph
+        xml_morphemes = xml_word.Morphemes()
+        xml_morph = xml_morphemes.Morph()
+
+        if not xml_word.morphemes:
+            xml_word.morphemes.append(xml_morphemes)
+        if not xml_morphemes.morph:
+            xml_morphemes.morph.append(xml_morph)
+
+        # Might need to change this when dealing with multiple morphemes
+        xml_word.morphemes[0].morph[0].item.append(xml_morph_item)
