@@ -198,8 +198,7 @@ def select_file_window():
         filetypes = [
             ("Marker and JSON Files", "*.typ *.json"),
             ("JSON files", "*.json"),
-            "Marker Files",
-            "*.typ",
+            ("Marker Files", "*.typ"),
         ]
         file = select_file("Select a Marker or JSON File", filetypes)
         if file:
